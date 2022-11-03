@@ -1,6 +1,8 @@
+import './css/style.css';
 import React from 'react';
 import FetchData from './components/Translater';
 import Start from './components/Start';
+import Trivia from './components/Trivia';
 
 export default function App(){
 
@@ -21,13 +23,15 @@ React.useEffect(() => {
 
   const getStarted = ()=>{
     setStart(true)
-    console.log(start)
   }
 
 
     return(
         <div className="app">
-            {start?<h1>{trivia.translatedText}</h1>:<Start getStarted={getStarted} />}
+            <header>
+                <h2>Trivia Pond</h2>
+            </header>
+            {start?<Trivia />:<Start getStarted={getStarted} />}
         </div>
     )
 }
