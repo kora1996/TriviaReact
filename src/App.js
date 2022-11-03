@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import FetchData from './components/Translater';
+import Start from './components/Start';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App(){
+
+    const [start, setStart] = React.useState(false)
+    const [trivia, setTrivia] = React.useState([])
+
+
+
+React.useEffect(() => {
+    FetchData()
+      .then((res) => {
+        setTrivia(res)
+      })
+      .catch((e) => {
+        console.log(e.message)
+      })
+  }, [])
+
+  const getStarted = ()=>{
+    setStart(true)
+    console.log(start)
+  }
+
+
+    return(
+        <div className="app">
+            {start?<h1>{trivia.translatedText}</h1>:<Start getStarted={getStarted} />}
+        </div>
+    )
 }
-
-export default App;
