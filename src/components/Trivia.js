@@ -30,8 +30,9 @@ const Trivia = (props)=>{
             <QuestionCard question={props.triviaQuestions} 
             a1={props.a1}
             a2={props.a2}
+            a3={props.a3}
+            a4={props.a4}
             />
-            <QuestionCard/>
 
             <button className='btn'>Check Answers</button>
         </div>

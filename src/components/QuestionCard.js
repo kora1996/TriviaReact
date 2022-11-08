@@ -43,9 +43,11 @@ const QuestionCard = (props)=>{
             {/* <button className='btn'>potential answers come here</button> */}
             <button>{props.a1}</button>
             <button>{props.a2}</button>
-            <QuestionAnswer allPossibleAnswers={props.allPossibleAnswers} />
+            <button>{props.a3}</button>
+            <button>{props.a4}</button>
+            {/* <QuestionAnswer allPossibleAnswers={props.allPossibleAnswers} />
             <button>potential answers come here</button>
-            <button>potential answers come here</button>
+            <button>potential answers come here</button> */}
 
             {/* {answers.map((answer)=>{
                 return <button>{answer}</button>
