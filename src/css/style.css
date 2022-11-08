@@ -1,0 +1,71 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+header {
+  height: 10%;
+  width: 100%;
+  background-image: linear-gradient(to bottom right, purple, blue);
+  padding: 1rem;
+  color: gold;
+  box-shadow: 0 0 8px 5px white inset;
+}
+
+.app {
+  height: 100vh;
+}
+
+.start {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 90%;
+  gap: 0.8rem;
+  background-image: linear-gradient(to bottom right, lightgreen, yellow);
+  box-shadow: 0 0 20px 9px white inset;
+  color: darkblue;
+}
+.start button {
+  padding: 0.5rem 2rem;
+  color: purple;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 45%;
+  border: none;
+  box-shadow: 2px 2px 2px 2px black;
+}
+
+.questionCard {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  padding: 1rem;
+  gap: 0.8rem;
+  border: 1px solid grey;
+  border-radius: 10px;
+}
+.questionCard .answers {
+  display: flex;
+  gap: 0.8rem;
+}
+.questionCard .answers button {
+  border: none;
+  background-color: greenyellow;
+  padding: 0.8rem;
+  border-radius: 10px;
+}
+
+.btn {
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+}
+.btn:hover {
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=style.css.map */
