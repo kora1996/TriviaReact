@@ -73,3 +73,6 @@ export default function GetStarted(){
         </div>
     )
 }
+
+
+// this is a test checking git marge
