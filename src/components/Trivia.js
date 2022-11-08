@@ -24,7 +24,7 @@ const Trivia = (props)=>{
 
     return(
         <div className="trivia">
-            <h1>Eat some trivia</h1>
+            {/* <h1>Eat some trivia</h1> */}
             {/* <h1>{trivia.translatedText}</h1> */}
             {/* <QuestionCard question={props.triviaQuestions[0].question} answer={props.triviaQuestions[0].correct_answer} /> */}
             <QuestionCard question={props.triviaQuestions} 
@@ -34,7 +34,7 @@ const Trivia = (props)=>{
             a4={props.a4}
             />
 
-            <button className='btn'>Check Answers</button>
+            {/* <button className='btn'>Check Answers</button> */}
         </div>
     )
 }
