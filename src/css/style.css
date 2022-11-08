@@ -53,7 +53,6 @@ header {
   gap: 0.8rem;
 }
 .questionCard .answers button {
-  border: none;
   background-color: greenyellow;
   padding: 0.8rem;
   border-radius: 10px;
@@ -63,9 +62,14 @@ header {
   padding: 1rem;
   border: none;
   border-radius: 10px;
+  box-shadow: 6px 6px 0 green;
 }
 .btn:hover {
   cursor: pointer;
+}
+.btn:active {
+  transform: translateX(2px) translateY(2px);
+  box-shadow: 4px 4px 0 green;
 }
 
 /*# sourceMappingURL=style.css.map */

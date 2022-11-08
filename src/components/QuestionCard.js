@@ -11,10 +11,10 @@ const QuestionCard = (props)=>{
             <h1>{JSON.stringify(props.question)}</h1>
             <hr />
             <div className="answers">
-           <button>{props.a1}</button>
-            <button>{props.a2}</button>
-            <button>{props.a3}</button>
-            <button>{props.a4}</button>
+           <button className='btn'>{props.a1}</button>
+            <button className='btn'>{props.a2}</button>
+            <button className='btn'>{props.a3}</button>
+            <button className='btn'>{props.a4}</button>
 
             </div>
         </div>
