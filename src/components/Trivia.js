@@ -6,7 +6,6 @@ const Trivia = (props)=>{
 
     const [translatedTrivia, setTranslatedTrivia] = React.useState([])
     const [loading, setLoading] = React.useState(false)
-    // const aa = async()=>{ await fetch( 'https://opentdb.com/api.php?amount=10' )}
 
 
     // React.useEffect(() => {
@@ -26,7 +25,7 @@ const Trivia = (props)=>{
         <div className="trivia">
             {/* <h1>Eat some trivia</h1> */}
             {/* <h1>{trivia.translatedText}</h1> */}
-            {/* <QuestionCard question={props.triviaQuestions[0].question} answer={props.triviaQuestions[0].correct_answer} /> */}
+
             <QuestionCard question={props.triviaQuestions} 
             a1={props.a1}
             a2={props.a2}
@@ -34,7 +33,6 @@ const Trivia = (props)=>{
             a4={props.a4}
             />
 
-            {/* <button className='btn'>Check Answers</button> */}
         </div>
     )
 }
