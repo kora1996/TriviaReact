@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Trivia from './Trivia';
+import { nanoid } from 'nanoid';
 
 export default function GetStarted(){
 
@@ -34,10 +35,16 @@ export default function GetStarted(){
         const set = []
         for (let index = 0; index < resp.data.results.length; index++) {
             const element = resp.data.results[index];
+            
             set.push(
                 [
-                element.question,
-                await combineAllAnswers(element, element.correct_answer)
+                    element.question,
+                    {
+                        value:await combineAllAnswers(element, element.correct_answer),
+                        id:nanoid(),
+                        isSelected:false
+
+                    }
                 ]
             )
         }
@@ -50,16 +57,19 @@ export default function GetStarted(){
 }
         ,[])
 
+        console.log(triviaBlock)
+
 
     const triviaItems = triviaBlock.map((item)=>{
         return(
 
             <Trivia 
+            key={item[1].id}
             triviaQuestions={item[0]}
-            a1={item[1][0]}
-            a2={item[1][1]}
-            a3={item[1][2]}
-            a4={item[1][3]}
+            a1={item[1].value[0]}
+            a2={item[1].value[1]}
+            a3={item[1].value[2]}
+            a4={item[1].value[3]}
             />
             )
     })
@@ -74,5 +84,3 @@ export default function GetStarted(){
     )
 }
 
-
-// this is a test checking git marge
