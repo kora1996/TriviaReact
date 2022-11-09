@@ -35,8 +35,8 @@ export default function GetStarted(){
         const set = []
         for (let index = 0; index < resp.data.results.length; index++) {
             const element = resp.data.results[index];
-            const some = await combineAllAnswers(element, element.correct_answer)
-            const answers =  some.map(item=>(
+            const combinedAnswers = await combineAllAnswers(element, element.correct_answer)
+            const objectedAnswers =  combinedAnswers.map(item=>(
                 { 
                 value:item,
                 id:nanoid(),
@@ -47,41 +47,54 @@ export default function GetStarted(){
             set.push(
                 [
                     element.question,
-                    answers
+                    objectedAnswers 
                 ]
             )
         }
         setTriviaBlock(set)
         setIsLoading(false)
     } catch(e){console.error(e)}
-    }
-        getTriviaData()
+}
+getTriviaData()
+// console.log(triviaBlock[0])
 
 }
         ,[])
 
-        console.log(triviaBlock)
+        console.table(triviaBlock)
 
+        triviaBlock.map(item=>{ 
+            console.log(item[0])
+            item[1].map(ans=>
+                console.log(ans.value)
+                )
+         })
+        // let hi = JSON.stringify(triviaBlock)
+        // console.log(hi[0][0])
+        // console.log(triviaBlock[0].values)
 
-    const triviaItems = triviaBlock.map((item)=>{
-        return(
+    // const triviaItems = triviaBlock.map((item)=>{
+    //     return(
 
-            <Trivia 
-            key={item[1].id}
-            triviaQuestions={item[0]}
-            a1={item[1][0].value}
-            a2={item[1][1].value}
-            a3={item[1][2].value}
-            a4={item[1][3].value}
-            />
-            )
-    })
+    //         <Trivia 
+    //         key={item[1].id}
+    //         triviaQuestions={item[0]}
+    //         a1={item[1][0].value}
+    //         a2={item[1][1].value}
+    //         a3={item[1][2].value}
+    //         a4={item[1][3].value}
+    //         />
+    //         )
+    // })
 
 
 
     return(
         <div className="getstarted">
-            {triviaItems}
+            {/* {triviaItems} */}
+            {/* <h1>{triviaBlock[0][0]}</h1>
+            <hr />
+            <button>{triviaBlock[0][1][0].value}</button> */}
             {isLoading?<h1>Loading...</h1>:<button className='btn'>Check Answers</button>}
         </div>
     )
