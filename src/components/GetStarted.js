@@ -61,17 +61,26 @@ getTriviaData()
 }
         ,[])
 
-        console.table(triviaBlock)
+        // console.table(triviaBlock)
 
-        triviaBlock.map(item=>{ 
+        const triviaItems = triviaBlock.map(item=>{ 
             console.log(item[0])
+            const anss = []
             item[1].map(ans=>
-                console.log(ans.value)
+                // console.log(ans.value),
+                anss.push(<button className='btn'>{ans.value}</button>)
+                )
+                return(
+                    <div className="questionCard">
+
+                    <h1>{item[0]}</h1>
+                    <hr />
+                    <div className="answers">
+                    {anss}
+                    </div>
+                    </div>
                 )
          })
-        // let hi = JSON.stringify(triviaBlock)
-        // console.log(hi[0][0])
-        // console.log(triviaBlock[0].values)
 
     // const triviaItems = triviaBlock.map((item)=>{
     //     return(
@@ -91,7 +100,7 @@ getTriviaData()
 
     return(
         <div className="getstarted">
-            {/* {triviaItems} */}
+            {triviaItems}
             {/* <h1>{triviaBlock[0][0]}</h1>
             <hr />
             <button>{triviaBlock[0][1][0].value}</button> */}
