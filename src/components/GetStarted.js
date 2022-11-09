@@ -35,16 +35,19 @@ export default function GetStarted(){
         const set = []
         for (let index = 0; index < resp.data.results.length; index++) {
             const element = resp.data.results[index];
+            const some = await combineAllAnswers(element, element.correct_answer)
+            const answers =  some.map(item=>(
+                { 
+                value:item,
+                id:nanoid(),
+                isSelected:false
+                }
+            ))
             
             set.push(
                 [
                     element.question,
-                    {
-                        value:await combineAllAnswers(element, element.correct_answer),
-                        id:nanoid(),
-                        isSelected:false
-
-                    }
+                    answers
                 ]
             )
         }
@@ -66,10 +69,10 @@ export default function GetStarted(){
             <Trivia 
             key={item[1].id}
             triviaQuestions={item[0]}
-            a1={item[1].value[0]}
-            a2={item[1].value[1]}
-            a3={item[1].value[2]}
-            a4={item[1].value[3]}
+            a1={item[1][0].value}
+            a2={item[1][1].value}
+            a3={item[1][2].value}
+            a4={item[1][3].value}
             />
             )
     })
