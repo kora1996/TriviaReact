@@ -50,11 +50,15 @@ header{
     border-radius: 10px;
     .answers{
         display: flex;
+        // flex-grow: 1;
         gap: .8rem;
+        justify-content: space-around;
+        align-items: center;
 
         button{
             // border: none;
             // background-color: greenyellow;
+            flex-grow: 1;
             padding: .8rem;
             border-radius: 10px;
         }

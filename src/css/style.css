@@ -51,8 +51,11 @@ header {
 .questionCard .answers {
   display: flex;
   gap: 0.8rem;
+  justify-content: space-around;
+  align-items: center;
 }
 .questionCard .answers button {
+  flex-grow: 1;
   padding: 0.8rem;
   border-radius: 10px;
 }

@@ -66,7 +66,7 @@ getTriviaData()
     //    console.log(correctAnswer) 
 
         const changeSelected = (e, id, quesID) =>{
-            console.log(quesID)
+            // console.log(quesID)
 
                 const testArr = []
                 for (let index = 0; index < triviaBlock.length; index++) {
@@ -92,7 +92,7 @@ getTriviaData()
 
 
                 question.push(
-                    <h1 key={item[0].id} >{item[0].value}</h1>
+                    <h1 key={item[0].id} >{removeCharacters(item[0].value)}</h1>
                 )
 
             item[1].map(ans=>
@@ -116,8 +116,14 @@ getTriviaData()
                 }
                 )
                 const cardKey = nanoid()
+
+                function removeCharacters(question) {
+                    return question.replace(/(&quot\;)/g, "\"").replace(/(&rsquo\;)/g, "\"").replace(/(&#039\;)/g, "\'").replace(/(&amp\;)/g, "\"");
+                  }
+
                 return(
                     <div key={cardKey} className="questionCard">
+                    {/* {removeCharacters(question)} */}
                     {question}
                     <hr />
                     <div className="answers">
@@ -150,7 +156,7 @@ getTriviaData()
             setTriviaBlock(finalForm)
 
         }
-        console.log(triviaBlock)
+        // console.log(triviaBlock)
 
     return(
         <div className="getstarted">
