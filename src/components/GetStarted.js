@@ -61,9 +61,10 @@ getTriviaData()
 }
         ,[])
 
-        console.table(triviaBlock)
+        // console.table(triviaBlock)
 
-       console.log(correctAnswer) 
+    //    console.log(correctAnswer) 
+
         const changeSelected = (e, id, quesID) =>{
             console.log(quesID)
 
@@ -96,7 +97,21 @@ getTriviaData()
 
             item[1].map(ans=>
                 {
-                const style = ans.isSelected?{backgroundColor:'purple'}:{backgroundColor:'greenyellow'}
+                // const style = ans.isSelected?{backgroundColor:'purple'}:{backgroundColor:'greenyellow'}
+                // const style = ans.isSelected? ans.correctAns? ans.isSelected&&ans.correctAns?
+                // {backgroundColor:'gold'}:
+                // {backgroundColor:'red'}:
+                // {backgroundColor:'purple'}:
+                // {backgroundColor:'greenyellow'};
+
+                const style = 
+                ans.correctAns&&ans.isSelected?{backgroundColor:'gold'}:
+                ans.isSelected?{backgroundColor:'purple'}:
+                ans.correctAns?{backgroundColor:'red'}:
+                {backgroundColor:'greenyellow'}
+
+
+                // const ansStyle = ans.correctAns&&{backgroundColor:'gold'}
                 anss.push(<button key={ans.id} onClick={(e)=>changeSelected(e, ans.id, item[0].id)} className='btn' style={style}>{ans.value}</button>)
                 }
                 )
@@ -112,10 +127,35 @@ getTriviaData()
                 )
          })
 
+         const checkAns = () =>{
+
+            const finalForm = []
+
+            for (let index = 0; index < triviaBlock.length; index++) {
+                const element = triviaBlock[index];
+                const correctAns = correctAnswer[index]
+
+                // element[1].map(hi=>console.log(typeof(hi.value)))
+                // console.log(typeof(correctAns))
+                // element[1].map(hi=>console.log(hi.value))
+                // console.log(correctAns)
+
+                const test = element[1].map(ans=>ans.value===correctAns?{...ans, correctAns:true}:{...ans})
+                finalForm.push([ element[0], test ])
+                // console.log(test)
+
+                //todo: find value by string and add correct:true
+            }
+
+            setTriviaBlock(finalForm)
+
+        }
+        console.log(triviaBlock)
+
     return(
         <div className="getstarted">
             {triviaItems}
-            {isLoading?<h1>Loading...</h1>:<button className='btn'>Check Answers</button>}
+            {isLoading?<h1>Loading...</h1>:<button className='btn' onClick={checkAns}>Check Answers</button>}
         </div>
     )
 }
