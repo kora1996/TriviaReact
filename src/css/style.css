@@ -74,4 +74,21 @@ header {
   box-shadow: 4px 4px 0 green;
 }
 
+.bottom-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  height: 15vh;
+  margin: 0.5rem;
+}
+.bottom-buttons .btn {
+  color: #fff;
+  background-color: black;
+  box-shadow: 6px 6px 0 gray;
+}
+.bottom-buttons .btn:active {
+  box-shadow: 4px 4px 0 gray;
+}
+
 /*# sourceMappingURL=style.css.map */

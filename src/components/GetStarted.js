@@ -61,6 +61,7 @@ getTriviaData()
 }
         ,[])
 
+
         // console.table(triviaBlock)
 
     //    console.log(correctAnswer) 
@@ -158,10 +159,48 @@ getTriviaData()
         }
         // console.log(triviaBlock)
 
+        const restart = async() =>{
+            setTriviaBlock([])
+        try{
+            setIsLoading(true)
+            const resp = await axios.get("https://opentdb.com/api.php?amount=5")
+        // setTriviaQuestions(resp.data.results)
+        setCorrectAnswer(resp.data.results.map(result=>result.correct_answer))
+        const set = []
+        for (let index = 0; index < resp.data.results.length; index++) {
+            const element = resp.data.results[index];
+            const combinedAnswers = await combineAllAnswers(element, element.correct_answer)
+            const objectedAnswers =  combinedAnswers.map(item=>(
+                { 
+                value:item,
+                id:nanoid(),
+                isSelected:false
+                }
+            ))
+            // setAllPossibleAnswers(prevState=>[...prevState, objectedAnswers])
+            const question = {value:element.question, id:nanoid()}
+            set.push(
+                [
+                    question,
+                    objectedAnswers 
+                ]
+            )
+        }
+        setTriviaBlock(set)
+        setIsLoading(false)
+    } catch(e){console.error(e)}
+}
+        
+
     return(
         <div className="getstarted">
             {triviaItems}
-            {isLoading?<h1>Loading...</h1>:<button className='btn' onClick={checkAns}>Check Answers</button>}
+
+            {isLoading?<h1>Loading...</h1>:
+            <div className='bottom-buttons'>
+                <button className='btn' onClick={checkAns}>Check Answers</button>
+                <button className='btn' onClick={restart}>Re-start</button>
+            </div>}
         </div>
     )
 }

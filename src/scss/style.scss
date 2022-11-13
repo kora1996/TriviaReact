@@ -78,3 +78,24 @@ header{
         box-shadow: 4px 4px 0 green;
     }
 }
+
+.bottom-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .8rem;
+    height: 15vh;
+    // background-color: red;
+    margin: .5rem;
+
+    .btn{
+        color: #fff;
+        background-color: black;
+        box-shadow: 6px 6px 0 gray;
+
+        &:active{
+        // transform: translateX(2px) translateY(2px);
+        box-shadow: 4px 4px 0 gray;
+        }
+    }
+}
