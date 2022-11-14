@@ -32,4 +32,5 @@ const Translator = async(item)=>{
                 return res.translatedText.map(item=>item)
     }
 
-export { TranslatorCorrectAns, TranslatorPlane } 
+
+export { TranslatorCorrectAns, Translator , TranslatorPlane} 
