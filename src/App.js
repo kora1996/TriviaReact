@@ -1,7 +1,8 @@
 import './css/style.css';
 import React from 'react';
 import Start from './components/StartMenu';
-import GetStart from './components/GetStarted_JP';
+import GetStart from './components/GetStarted_next_test';
+// import GetStart from './components/GetStarted_JP';
 
 export default function App(){
 

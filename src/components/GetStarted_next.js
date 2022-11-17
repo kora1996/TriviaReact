@@ -28,13 +28,86 @@ export default function GetStarted(){
     }
 
     
-    React.useEffect(()=>{
+//     React.useEffect(()=>{
 
-    async function getTriviaData(){
+//     async function getTriviaData(){
+//         try{
+//             setIsLoading(true)
+//             const resp = await axios.get("https://opentdb.com/api.php?amount=50")
+//         // setTriviaQuestions(resp.data.results)
+
+// // ! test array each 5 items
+//             const john =[]
+//             const cina = resp.data.results.map(i=>i.question)
+            
+
+//             // console.log(cina)
+
+//             while(cina.length>=1){
+//                 const bob = [cina.splice(0,5)]
+//                 john.push(bob)
+//             }
+//             console.log(john)
+
+
+
+// // ! test array each 5 items
+
+//         setCorrectAnswer(resp.data.results.map(result=>result.correct_answer))
+//         const set = []
+//         for (let index = 0; index < resp.data.results.length; index++) {
+//             const element = resp.data.results[index];
+//             const combinedAnswers = await combineAllAnswers(element, element.correct_answer)
+//             const objectedAnswers =  combinedAnswers.map(item=>(
+//                 { 
+//                 value:item,
+//                 id:nanoid(),
+//                 isSelected:false
+//                 }
+//             ))
+//             // setAllPossibleAnswers(prevState=>[...prevState, objectedAnswers])
+//             const question = {value:element.question, id:nanoid()}
+//             set.push(
+//                 [
+//                     question,
+//                     objectedAnswers 
+//                 ]
+//             )
+//         }
+//         setTriviaBlock(set)
+//         setIsLoading(false)
+//     } catch(e){console.error(e)}
+// }
+// getTriviaData()
+
+// }
+//         ,[])
+
+
+    React.useEffect(()=>{
+   async function getTriviaData(){
         try{
             setIsLoading(true)
             const resp = await axios.get("https://opentdb.com/api.php?amount=50")
         // setTriviaQuestions(resp.data.results)
+
+// ! test array each 5 items
+            const john =[]
+            const cina = resp.data.results.map(i=>i.question)
+            
+
+            // console.log(cina)
+
+            while(cina.length>=1){
+                const bob = [cina.splice(0,5)]
+                john.push(bob)
+            }
+            console.log(john)
+
+
+
+// ! test array each 5 items
+
         setCorrectAnswer(resp.data.results.map(result=>result.correct_answer))
         const set = []
         for (let index = 0; index < resp.data.results.length; index++) {
@@ -89,7 +162,21 @@ getTriviaData()
 
             }
 
-        
+        // function* createChunkGenerator(
+        //     itemList, chunkSize=1, chunkCount=0
+        // ){
+        //     chunkSize = Math.max(chunkSize, 1);
+
+        //     while (itemList.length >= 1){
+        //         ++chunkCount
+        //         yield{
+        //             chunkCount,
+        //             itemList: itemList.splice(0, chunkSize)
+        //         }
+        //     }
+        // }
+
+
         
         const triviaItems = triviaBlock.map(item=>{ 
             const question = []
