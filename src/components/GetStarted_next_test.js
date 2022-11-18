@@ -39,6 +39,8 @@ export default function GetStarted(){
 
 // ! nextQues func -----------------------------------------------------
         function nextQues(){
+            console.log(triviaBlock)
+            // setCurrentBlock([])
             setCurrentBlock(holder.splice(0,1))
             setAnswered(false)
         }
@@ -49,14 +51,6 @@ export default function GetStarted(){
         try{
             setIsLoading(true)
             const resp = await axios.get("https://opentdb.com/api.php?amount=50")
-        // setTriviaQuestions(resp.data.results)
-
-// ! test array each 5 items -------------------------------------------------
-
-// ! test array each 5 items ------------------------------------------------------------
-
-
-
 
         setCorrectAnswer(resp.data.results.map(result=>result.correct_answer))
         const set = []
@@ -177,6 +171,7 @@ export default function GetStarted(){
          const checkAns = () =>{
 
             setAnswered(true)
+            console.log(currentBlock)
              
              const finalForm = []
              let correctCount = 0
