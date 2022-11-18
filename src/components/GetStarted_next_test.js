@@ -6,7 +6,14 @@ import { nanoid } from 'nanoid';
 export default function GetStarted(){
 
     const [triviaQuestions, setTriviaQuestions] = React.useState([])
+
+    const [CAHolder, setCAHolder] = React.useState([])
     const [correctAnswer, setCorrectAnswer] = React.useState('')
+    const [currentAnsBlock, setCurrentAnsBlock] = React.useState('')
+
+
+    const [score, setScore]=React.useState(0)
+
     const [allPossibleAnswers, setAllPossibleAnswers] = React.useState([])
     const [isLoading, setIsLoading] = React.useState(false)
     const [triviaBlock, setTriviaBlock] = React.useState([])
@@ -39,9 +46,8 @@ export default function GetStarted(){
 
 // ! nextQues func -----------------------------------------------------
         function nextQues(){
-            console.log(triviaBlock)
-            // setCurrentBlock([])
             setCurrentBlock(holder.splice(0,1))
+            setCurrentAnsBlock(CAHolder.splice(0,1))
             setAnswered(false)
         }
 // ! nextQues func -----------------------------------------------------
@@ -52,7 +58,6 @@ export default function GetStarted(){
             setIsLoading(true)
             const resp = await axios.get("https://opentdb.com/api.php?amount=50")
 
-        setCorrectAnswer(resp.data.results.map(result=>result.correct_answer))
         const set = []
         for (let index = 0; index < resp.data.results.length; index++) {
             const element = resp.data.results[index];
@@ -73,6 +78,14 @@ export default function GetStarted(){
                 ]
             )
         }
+
+        const ansBlock = []
+        const allCA = resp.data.results.map(result=>result.correct_answer)
+        while(allCA.length>=1){
+            const chunkedAns = allCA.splice(0,5)
+            ansBlock.push(chunkedAns)
+        }
+        setCAHolder(ansBlock)
 
         const blocks = []
         while(set.length>=1){
@@ -171,16 +184,14 @@ export default function GetStarted(){
          const checkAns = () =>{
 
             setAnswered(true)
-            console.log(currentBlock)
              
              const finalForm = []
              let correctCount = 0
              currentBlock.map(item=>{
-                 console.log(item.length)
                  
                 for (let index = 0; index < item.length; index++) {
                     const element = item[index];
-                const correctAns = correctAnswer[index]
+                const correctAns = currentAnsBlock[0][index]
                 
                 const test = element[1].map(ans=>ans.value===correctAns?{...ans, correctAns:true}:{...ans, correctAns:false})
                 // correctCount.push(test.filter(i=>i.correctAns==true&&i.isSelected==true))
@@ -197,19 +208,19 @@ export default function GetStarted(){
             }
 
         })
-            console.log(correctCount)
+            setScore(prevState=> prevState + correctCount)
             setLife(prevState=>prevState-(5-correctCount))
             setCurrentBlock([ finalForm ])
             setTriviaBlock(finalForm)
         }
 
-        const restart = async() =>{
+    const restart = async() =>{
             setTriviaBlock([])
         try{
             setIsLoading(true)
             const resp = await axios.get("https://opentdb.com/api.php?amount=5")
         // setTriviaQuestions(resp.data.results)
-        setCorrectAnswer(resp.data.results.map(result=>result.correct_answer))
+        setCAHolder(resp.data.results.map(result=>result.correct_answer))
         const set = []
         for (let index = 0; index < resp.data.results.length; index++) {
             const element = resp.data.results[index];
@@ -240,13 +251,14 @@ export default function GetStarted(){
     return(
         <div className="getstarted">
             <h1>Your life: {life}</h1>
+            <h1>Your Score: {score}</h1>
             {triviaItems}
 
             {isLoading?<h1>Loading...</h1>:
             <div className='bottom-buttons'>
                 {!answered&&<button className='btn' onClick={checkAns}>Check Answers</button>}
                 <button className='btn' onClick={restart}>Re-start</button>
-                {life>=0&&answered?<button className='btn' onClick={nextQues}>Next Page</button>:
+                {life>0&&answered?<button className='btn' onClick={nextQues}>Next Page</button>:
                 answered? <h1>done</h1>:
                 ''}
             </div>}
