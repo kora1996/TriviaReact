@@ -77,7 +77,14 @@ header{
         transform: translateX(2px) translateY(2px);
         box-shadow: 4px 4px 0 green;
     }
+
+    &.result{
+        color: white;
+        background-image: linear-gradient(to bottom right, gold, blue);
+    }
 }
+
+
 
 .bottom-buttons{
     display: flex;
@@ -90,12 +97,43 @@ header{
 
     .btn{
         color: #fff;
-        background-color: black;
+        background-image: linear-gradient(to bottom right, white, blue);
         box-shadow: 6px 6px 0 gray;
 
         &:active{
         // transform: translateX(2px) translateY(2px);
         box-shadow: 4px 4px 0 gray;
         }
+    }
+}
+
+.finishPage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 90vh;
+    gap: 1rem;
+    background-image: linear-gradient(to bottom right, lightgreen, yellow);
+    box-shadow: 0 0 20px 9px white inset;
+    color: darkblue;
+}
+
+.questions{
+    margin: 1rem 2rem;
+}
+
+.status{
+    margin: 1rem 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+
+    .statusBlock{
+        border-radius: 10px;
+        border: 1px solid orange;
+        box-shadow: 5px 5px 0 orange;
+        color: gold;
+        background-image: linear-gradient(to bottom right, purple, red);
     }
 }

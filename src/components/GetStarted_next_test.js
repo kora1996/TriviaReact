@@ -2,9 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import Trivia from './Trivia';
 import { nanoid } from 'nanoid';
+import FinishPage from './Finish';
 
 export default function GetStarted(){
-
+    const [resultPage, setResultPage] = React.useState(false)
     const [triviaQuestions, setTriviaQuestions] = React.useState([])
 
     const [CAHolder, setCAHolder] = React.useState([])
@@ -22,8 +23,15 @@ export default function GetStarted(){
     const [currentBlock, setCurrentBlock] = React.useState([])
     const [life, setLife] = React.useState(10)
     const [answered, setAnswered] = React.useState(false)
-    const [x, setX]=React.useState(0)
+    const [done, setDone] = React.useState(false)
 
+    const [round, setRound]= React.useState(0)
+
+    const [bestScore, setBestScore] = React.useState(JSON.parse(localStorage.getItem('bestScore'))||null)
+
+    const [newBest, setNewBest] = React.useState(false)
+
+    const [king, setKing] = React.useState(false)
     // todo: for line 94 triviaItems, render each 5 blocks
     const [pageIndex, setPageIndex] = React.useState(1)
 
@@ -51,6 +59,14 @@ export default function GetStarted(){
             setAnswered(false)
         }
 // ! nextQues func -----------------------------------------------------
+
+    React.useEffect(()=>{
+        setRound(pre=>pre+1)
+        if(round==0)return
+        if(life<1 || holder.length==0){
+            setDone(true)
+        }
+    }, [triviaBlock])
 
     React.useEffect(()=>{
    async function getTriviaData(){
@@ -107,9 +123,6 @@ export default function GetStarted(){
             nextQues()
         }
         ,[holder])
-        // console.table(triviaBlock)
-
-    //    console.log(correctAnswer) 
 
         const changeSelected = (e, id, quesID) =>{
 
@@ -117,8 +130,6 @@ export default function GetStarted(){
                 currentBlock.map(i=>{
                     for (let index = 0; index < i.length; index++) {
                         const element = i[index];
-                        // console.log(i[0])
-                        // console.log(element[0][0])
                         if (element[0].id===quesID) {
                             const deli = element[1].map(item=>item.id===id?{...item, isSelected:true}:{...item, isSelected:false})
                             testArr.push([element[0], deli])
@@ -156,7 +167,6 @@ export default function GetStarted(){
                 {backgroundColor:'greenyellow'}
 
 
-                // const ansStyle = ans.correctAns&&{backgroundColor:'gold'}
                 anss.push(<button key={ans.id} onClick={(e)=>changeSelected(e, ans.id, i[0].id)} className='btn' style={style}>{ans.value}</button>)
                 }
                 )
@@ -168,7 +178,6 @@ export default function GetStarted(){
                   
                   return(
                       <div key={cardKey} className="questionCard">
-                    {/* {removeCharacters(question)} */}
                     {question}
                     <hr />
                     <div className="answers">
@@ -194,7 +203,6 @@ export default function GetStarted(){
                 const correctAns = currentAnsBlock[0][index]
                 
                 const test = element[1].map(ans=>ans.value===correctAns?{...ans, correctAns:true}:{...ans, correctAns:false})
-                // correctCount.push(test.filter(i=>i.correctAns==true&&i.isSelected==true))
                 for (let index = 0; index < test.length; index++) {
                     const element = test[index];
                     if (element.correctAns==true&&element.isSelected==true) {
@@ -202,7 +210,6 @@ export default function GetStarted(){
                     }
                 }
                 finalForm.push([ element[0], test ])
-                // console.log(test)
 
                 //todo: find value by string and add correct:true
             }
@@ -215,12 +222,18 @@ export default function GetStarted(){
         }
 
     const restart = async() =>{
-            setTriviaBlock([])
         try{
             setIsLoading(true)
-            const resp = await axios.get("https://opentdb.com/api.php?amount=5")
-        // setTriviaQuestions(resp.data.results)
-        setCAHolder(resp.data.results.map(result=>result.correct_answer))
+            setResultPage(false)
+            setLife(10)
+            setDone(false)
+            setRound(0)
+            setScore(0)
+            setTriviaBlock([])
+            setNewBest(false)
+            setKing(false)
+            const resp = await axios.get("https://opentdb.com/api.php?amount=50")
+
         const set = []
         for (let index = 0; index < resp.data.results.length; index++) {
             const element = resp.data.results[index];
@@ -232,7 +245,6 @@ export default function GetStarted(){
                 isSelected:false
                 }
             ))
-            // setAllPossibleAnswers(prevState=>[...prevState, objectedAnswers])
             const question = {value:element.question, id:nanoid()}
             set.push(
                 [
@@ -241,27 +253,74 @@ export default function GetStarted(){
                 ]
             )
         }
-        setTriviaBlock(set)
+
+        const ansBlock = []
+        const allCA = resp.data.results.map(result=>result.correct_answer)
+        while(allCA.length>=1){
+            const chunkedAns = allCA.splice(0,5)
+            ansBlock.push(chunkedAns)
+        }
+        setCAHolder(ansBlock)
+
+        const blocks = []
+        while(set.length>=1){
+            const chunked = set.splice(0,5)
+            blocks.push(chunked)
+        }
+        setHolder(blocks)
         setIsLoading(false)
     } catch(e){console.error(e)}
 }
 
+const handleResult = ()=>{
+    if(bestScore===null || score>bestScore.score){
+        setNewBest(true)
+        setKing(true)
+    }
+
+    setResultPage(true)
+}
+
+const newBester = () =>{
+    setBestScore(JSON.parse(localStorage.getItem('bestScore')))
+    setNewBest(false)
+}
         
 
     return(
         <div className="getstarted">
-            <h1>Your life: {life}</h1>
-            <h1>Your Score: {score}</h1>
-            {triviaItems}
+            {resultPage?
+            <FinishPage score={score} king={king} restart={restart} bestScore={bestScore} newBest={newBest} newBester={newBester}/>:
+            <div>
+                {!isLoading&&
+                <div className='status'>
+                <div className='statusBlock'>
+                    <h1>Your life: {life}</h1>
+                </div>
 
-            {isLoading?<h1>Loading...</h1>:
-            <div className='bottom-buttons'>
-                {!answered&&<button className='btn' onClick={checkAns}>Check Answers</button>}
-                <button className='btn' onClick={restart}>Re-start</button>
-                {life>0&&answered?<button className='btn' onClick={nextQues}>Next Page</button>:
-                answered? <h1>done</h1>:
-                ''}
-            </div>}
+                <div className="statusBlock">
+                    <h1>Your Score: {score}</h1>
+                </div>
+
+                </div>
+                }
+
+                {isLoading?<h1>Loading...</h1>:
+                <div>
+                    <div className="questions">
+                        {triviaItems}
+                    </div>
+
+                <div className='bottom-buttons'>
+                    {!answered&&<button className='btn' onClick={checkAns}>Check Answers</button>}
+                    {answered&&done? <button className='btn result' onClick={handleResult}>Result Page</button>:
+                    life>0&&answered?<button className='btn' onClick={nextQues}>Next Page</button>:
+                    ''}
+                </div>
+                </div>
+                }
+            </div>
+        }
         </div>
     )
 }
