@@ -4,7 +4,7 @@ import Trivia from './Trivia';
 import { nanoid } from 'nanoid';
 import FinishPage from './Finish';
 
-export default function GetStarted(){
+export default function GetStarted(props){
     const [resultPage, setResultPage] = React.useState(false)
     const [triviaQuestions, setTriviaQuestions] = React.useState([])
 
@@ -71,8 +71,10 @@ export default function GetStarted(){
     React.useEffect(()=>{
    async function getTriviaData(){
         try{
+            const url = `https://opentdb.com/api.php?amount=20&category=${props.formData.category}&difficulty=${props.formData.difficulty}`
+
             setIsLoading(true)
-            const resp = await axios.get("https://opentdb.com/api.php?amount=50")
+            const resp = await axios.get(url)
 
         const set = []
         for (let index = 0; index < resp.data.results.length; index++) {
@@ -114,10 +116,12 @@ export default function GetStarted(){
     } catch(e){console.error(e)}
 }
  getTriviaData()
- 
+//  while(true){
+
+//      setTimeout(()=>console.log('hi'), 1000)
+//  }
 }
 ,[])
-
 
         React.useEffect(()=>{
             nextQues()
@@ -167,7 +171,7 @@ export default function GetStarted(){
                 {backgroundColor:'greenyellow'}
 
 
-                anss.push(<button key={ans.id} onClick={(e)=>changeSelected(e, ans.id, i[0].id)} className='btn' style={style}>{ans.value}</button>)
+                anss.push(<button key={ans.id} onClick={(e)=>changeSelected(e, ans.id, i[0].id)} className='btn' style={style}>{removeCharacters(ans.value)}</button>)
                 }
                 )
                 const cardKey = nanoid()
@@ -221,8 +225,60 @@ export default function GetStarted(){
             setTriviaBlock(finalForm)
         }
 
-    const restart = async() =>{
-        try{
+//     const restart = async() =>{
+//         try{
+//             props.restart()
+//             setIsLoading(true)
+//             setResultPage(false)
+//             setLife(10)
+//             setDone(false)
+//             setRound(0)
+//             setScore(0)
+//             setTriviaBlock([])
+//             setNewBest(false)
+//             setKing(false)
+//             const resp = await axios.get("https://opentdb.com/api.php?amount=50")
+
+//         const set = []
+//         for (let index = 0; index < resp.data.results.length; index++) {
+//             const element = resp.data.results[index];
+//             const combinedAnswers = await combineAllAnswers(element, element.correct_answer)
+//             const objectedAnswers =  combinedAnswers.map(item=>(
+//                 { 
+//                 value:item,
+//                 id:nanoid(),
+//                 isSelected:false
+//                 }
+//             ))
+//             const question = {value:element.question, id:nanoid()}
+//             set.push(
+//                 [
+//                     question,
+//                     objectedAnswers 
+//                 ]
+//             )
+//         }
+
+//         const ansBlock = []
+//         const allCA = resp.data.results.map(result=>result.correct_answer)
+//         while(allCA.length>=1){
+//             const chunkedAns = allCA.splice(0,5)
+//             ansBlock.push(chunkedAns)
+//         }
+//         setCAHolder(ansBlock)
+
+//         const blocks = []
+//         while(set.length>=1){
+//             const chunked = set.splice(0,5)
+//             blocks.push(chunked)
+//         }
+//         setHolder(blocks)
+//         setIsLoading(false)
+//     } catch(e){console.error(e)}
+// }
+
+    const restart = () =>{
+            props.restart()
             setIsLoading(true)
             setResultPage(false)
             setLife(10)
@@ -232,44 +288,6 @@ export default function GetStarted(){
             setTriviaBlock([])
             setNewBest(false)
             setKing(false)
-            const resp = await axios.get("https://opentdb.com/api.php?amount=50")
-
-        const set = []
-        for (let index = 0; index < resp.data.results.length; index++) {
-            const element = resp.data.results[index];
-            const combinedAnswers = await combineAllAnswers(element, element.correct_answer)
-            const objectedAnswers =  combinedAnswers.map(item=>(
-                { 
-                value:item,
-                id:nanoid(),
-                isSelected:false
-                }
-            ))
-            const question = {value:element.question, id:nanoid()}
-            set.push(
-                [
-                    question,
-                    objectedAnswers 
-                ]
-            )
-        }
-
-        const ansBlock = []
-        const allCA = resp.data.results.map(result=>result.correct_answer)
-        while(allCA.length>=1){
-            const chunkedAns = allCA.splice(0,5)
-            ansBlock.push(chunkedAns)
-        }
-        setCAHolder(ansBlock)
-
-        const blocks = []
-        while(set.length>=1){
-            const chunked = set.splice(0,5)
-            blocks.push(chunked)
-        }
-        setHolder(blocks)
-        setIsLoading(false)
-    } catch(e){console.error(e)}
 }
 
 const handleResult = ()=>{
