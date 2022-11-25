@@ -3,7 +3,7 @@ import axios from 'axios';
 import Trivia from './Trivia';
 import { nanoid } from 'nanoid';
 import FinishPage from './Finish';
-import { TranslatorCorrectAns, Translator , TranslatorPlane} from './Translator';
+import { TranslatorCorrectAns, Translator , TranslatorPlane} from './TranslatorTest';
 
 export default function GetStarted(props){
     const [resultPage, setResultPage] = React.useState(false)
@@ -81,8 +81,56 @@ export default function GetStarted(props){
             // ! translate block
             // props.isJapanese&&TranslatorCorrectAns(resp.data.results, 'correct_answer', setCorrectAnswer)
             // ! translate block
-
+            console.log(resp.data.results)
         const set = []
+
+
+        const ob = {value:'cat eat fish', id:'1342134'}
+        // const haha = Translator(['i ate tofu', 'it ate mad', 'dog eat dog world'])
+
+
+        // const haha = Translator(ob.value)
+        // console.log(haha)
+        // haha.then((hi)=>console.log(hi.translatedText))
+
+
+        // ! TEST making translate block------------------------------------------------------
+        const traQue = []
+        const traInAns = []
+        const traCoAns = []
+
+        for (let index = 0; index < resp.data.results.length; index++) {
+            const element = resp.data.results[index];
+            const id = nanoid()
+            const ques = {value:element.question, id:id}
+            traQue.push(ques)
+
+            const inAns = {value:element.incorrect_answers, id:id}
+            traInAns.push(inAns)
+
+            const coAns = {value:element.correct_answer, id:id}
+            traCoAns.push(coAns)
+        }
+        // console.log(traQue)
+        // console.log(traInAns)
+        // console.log(traCoAns)
+
+        const qu = Translator(traQue.map(i=>i.value))
+        qu.then(val=>console.log(val))
+
+        // ! TEST making translate block------------------------------------------------------
+
+
+
+
+        // ! translate here before making blocks ---------------------
+        //     const aa = resp.data.results.map(i=>i.question)
+        // const joke = TranslatorPlane(aa)
+        // joke.then(console.log(joke))
+        // ! have to connect question and answers accordingly using id or smth--------------------
+
+
+
         for (let index = 0; index < resp.data.results.length; index++) {
             const element = resp.data.results[index];
             let combinedAnswers = await combineAllAnswers(element, element.correct_answer)
@@ -131,8 +179,6 @@ export default function GetStarted(props){
         const nono = [{value:'joe mama', id:18435784}, {value:"what's your mama's favorite?", id:245435}]
         // const joke = TranslatorPlane(nono)
         // console.log(joke)
-        console.log(allCA)
-        set.map(i=>console.log(i))
 
         while(allCA.length>=1){
             const chunkedAns = allCA.splice(0,5)
@@ -157,6 +203,7 @@ export default function GetStarted(props){
 //  }
 }
 ,[])
+
 
         React.useEffect(()=>{
             nextQues()

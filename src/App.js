@@ -1,7 +1,7 @@
 import './css/style.css';
 import React from 'react';
 import Start from './components/StartMenu';
-import GetStart from './components/GetStarted_next_test';
+import GetStart from './components/GetStarted_next_test02';
 // import GetStart from './components/GetStarted_JP';
 
 export default function App(){
@@ -40,6 +40,7 @@ export default function App(){
 
   const restart = ()=>{
     setStart(false)
+    setIsJapanese(false)
   }
 
 
@@ -50,7 +51,7 @@ export default function App(){
                 <h2>Trivia Pond</h2>
             </header>
             {start?
-            <GetStart formData={formData} restart={restart}/>
+            <GetStart formData={formData} restart={restart} isJapanese={isJapanese}/>
             :<Start getStarted={getStarted} handleChange={handleChange} formData={formData} langSwitch={langSwitch}/>}
             {/* {triviaItems} */}
 
