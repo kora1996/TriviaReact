@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 const Translator = async(item)=>{
-         const res = await fetch("https://libretranslate.de/translate", {
+        const res = await fetch("https://libretranslate.de/translate", {
         method: "POST",
         body: JSON.stringify({
             q: item,
@@ -13,7 +13,7 @@ const Translator = async(item)=>{
             api_key: ""
         }),
         headers: { "Content-Type": "application/json" }
-    });
+    })
     return res.json()
 }
 

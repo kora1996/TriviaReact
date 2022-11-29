@@ -52,13 +52,111 @@ export default function GetStarted(props){
     
 
 
-
 // ! nextQues func -----------------------------------------------------
-        function nextQues(){
-            setCurrentBlock(holder.splice(0,1))
-            setCurrentAnsBlock(CAHolder.splice(0,1))
-            setAnswered(false)
+        async function nextQues(){
+            if(props.isJapanese && round===1){
+                setIsLoading(true)
+                console.log('nono')
+                
+                // ! For setCurrentBlock -------------------------------------------------------------------------------
+                const hol = holder.splice(0,1)
+                for (let index = 0; index < hol.length; index++) {
+                    const element = hol[index];
+                    console.log(element)
+
+                    const jerk = []
+                    let ay=[]
+
+                    for (let index = 0; index < element.length; index++) {
+                        const el = element[index];
+
+                        console.log(el)
+
+                    // TODO: translate and form question block object
+                            await Translator(el[0].value)
+                                .then(val=>{
+                                    ay.push({...el[0], value:val.translatedText})
+                                })
+
+                        // * {value:-----, id:-------}
+
+                        // TODO: iterate throught, translate and form answer block object and put in a array
+                        const bundler = []
+                        
+                       await Promise.all(
+                            el[1].map(i=> 
+                                Translator(i.value)
+                                .then(val=>
+                                    bundler.push({...i, value:val.translatedText})
+                                    )
+                                    .catch(err=>
+                                        console.log(err)
+                                        )
+                                        )
+                        )
+
+                        console.log(bundler)
+                        
+                        jerk.push(bundler)
+                        // console.log(bundler.length)
+                        // console.log(firstB)
+                    }
+                           console.log(ay) 
+                    console.log(jerk)
+                    // * [ [{value:---, id:---, isSelected:---},,,,,] *5]
+
+                    // TODO: For currentBlock, concatinate above two items in a single array and return
+                    // *[{obj}, [{obj}*5]]
+
+                    //  TODO: For currentAnsBlock, 
+                    // * [ ['ans','ans',,,,]*5 ]
+                    // element.map(i=>console.log(i[1]) )
+
+                    //  TODO: making final form block
+                    const qb = []
+                    for (let index = 0; index < jerk.length; index++) {
+                        qb.push([ay[index], jerk[index]])
+                    }
+                    setCurrentBlock([qb])
+                }
+// ! For setCurrentBlock -------------------------------------------------------------------------------
+
+// ! For setCurrentAnsBlock -------------------------------------------------------------------
+                let CAhol = CAHolder.splice(0,1)
+                CAhol = CAhol.flat()
+                console.log(CAhol)
+                
+                const dog = []
+                for (let index = 0; index < CAhol.length; index++) {
+                    const element = CAhol[index];
+                    await Translator(element)
+                    .then(res=>
+                        dog.push(res.translatedText)
+                        )
+                }
+
+
+                
+                console.log(dog)
+                setCurrentAnsBlock([dog])
+                setIsLoading(false)
+
+                setTimeout(() => {
+                    console.log('dragonborn')
+                }, 25000);
+
+
+// ! For setCurrentAnsBlock -------------------------------------------------------------------
+                    setAnswered(false)
+            }else{
+
+                 setCurrentBlock(holder.splice(0,1))
+                 setCurrentAnsBlock(CAHolder.splice(0,1))
+                setAnswered(false)
+            }
         }
+console.log(currentAnsBlock)
+console.log(currentBlock)
 // ! nextQues func -----------------------------------------------------
 
     React.useEffect(()=>{
@@ -78,14 +176,18 @@ export default function GetStarted(props){
             const resp = await axios.get(url)
 
 
+                function removeCharacters(question) {
+                    return question.replace(/(&quot\;)/g, "\"").replace(/(&rsquo\;)/g, "\"").replace(/(&#039\;)/g, "\'").replace(/(&amp\;)/g, "\"");
+                  }
+
             // ! translate block
             // props.isJapanese&&TranslatorCorrectAns(resp.data.results, 'correct_answer', setCorrectAnswer)
             // ! translate block
-            console.log(resp.data.results)
+            // console.log(resp.data.results)
         const set = []
 
 
-        const ob = {value:'cat eat fish', id:'1342134'}
+        // const ob = {value:'cat eat fish', id:'1342134'}
         // const haha = Translator(['i ate tofu', 'it ate mad', 'dog eat dog world'])
 
 
@@ -95,28 +197,28 @@ export default function GetStarted(props){
 
 
         // ! TEST making translate block------------------------------------------------------
-        const traQue = []
-        const traInAns = []
-        const traCoAns = []
+        // const traQue = []
+        // const traInAns = []
+        // const traCoAns = []
 
-        for (let index = 0; index < resp.data.results.length; index++) {
-            const element = resp.data.results[index];
-            const id = nanoid()
-            const ques = {value:element.question, id:id}
-            traQue.push(ques)
+        // for (let index = 0; index < resp.data.results.length; index++) {
+        //     const element = resp.data.results[index];
+        //     const id = nanoid()
+        //     const ques = {value:element.question, id:id}
+        //     traQue.push(ques)
 
-            const inAns = {value:element.incorrect_answers, id:id}
-            traInAns.push(inAns)
+        //     const inAns = {value:element.incorrect_answers, id:id}
+        //     traInAns.push(inAns)
 
-            const coAns = {value:element.correct_answer, id:id}
-            traCoAns.push(coAns)
-        }
-        // console.log(traQue)
-        // console.log(traInAns)
-        // console.log(traCoAns)
+        //     const coAns = {value:element.correct_answer, id:id}
+        //     traCoAns.push(coAns)
+        // }
+        // // console.log(traQue)
+        // // console.log(traInAns)
+        // // console.log(traCoAns)
 
-        const qu = Translator(traQue.map(i=>i.value))
-        qu.then(val=>console.log(val))
+        // const qu = Translator(traQue.map(i=>i.value))
+        // qu.then(val=>console.log(val))
 
         // ! TEST making translate block------------------------------------------------------
 
@@ -136,29 +238,29 @@ export default function GetStarted(props){
             let combinedAnswers = await combineAllAnswers(element, element.correct_answer)
 
             // ! translate block-----------------------------------
-            if(props.isJapanese){
-                const hi = await TranslatorPlane(combinedAnswers)
-                combinedAnswers = await hi.map((result)=>result)
-            }
+            // if(props.isJapanese){
+            //     const hi = await TranslatorPlane(combinedAnswers)
+            //     combinedAnswers = await hi.map((result)=>result)
+            // }
             // ! translate block----------------------------------------
 
             const objectedAnswers =  combinedAnswers.map(item=>(
                 { 
-                value:item,
+                value:removeCharacters(item),
                 id:nanoid(),
                 isSelected:false
                 }
             ))
             // setAllPossibleAnswers(prevState=>[...prevState, objectedAnswers])
-            let question = {value:element.question, id:nanoid()}
+            let question = {value:removeCharacters(element.question), id:nanoid()}
 
 
             // ! translate block--------------------------------------
-                if (props.isJapanese) {
+                // if (props.isJapanese) {
                     
-                    const hey = await Translator(element.question)
-                     question = {value:hey.translatedText, id:nanoid()}
-                }
+                //     const hey = await Translator(element.question)
+                //      question = {value:hey.translatedText, id:nanoid()}
+                // }
             // ! translate block-----------------------------------------
 
 
@@ -174,11 +276,8 @@ export default function GetStarted(props){
         }
 
         const ansBlock = []
-        const allCA = resp.data.results.map(result=>result.correct_answer)
+        const allCA = resp.data.results.map(result=>removeCharacters(result.correct_answer))
 
-        const nono = [{value:'joe mama', id:18435784}, {value:"what's your mama's favorite?", id:245435}]
-        // const joke = TranslatorPlane(nono)
-        // console.log(joke)
 
         while(allCA.length>=1){
             const chunkedAns = allCA.splice(0,5)
@@ -203,6 +302,9 @@ export default function GetStarted(props){
 //  }
 }
 ,[])
+
+// console.log(holder)
+// console.log(CAHolder)
 
 
         React.useEffect(()=>{
