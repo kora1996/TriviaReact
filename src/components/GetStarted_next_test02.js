@@ -21,6 +21,7 @@ export default function GetStarted(props){
     const [triviaBlock, setTriviaBlock] = React.useState([])
 
     const [holder, setHolder]= React.useState([])
+    const [traHolder, setTraHolder]= React.useState([])
     const [currentBlock, setCurrentBlock] = React.useState([])
     const [life, setLife] = React.useState(10)
     const [answered, setAnswered] = React.useState(false)
@@ -35,6 +36,8 @@ export default function GetStarted(props){
     const [king, setKing] = React.useState(false)
     // todo: for line 94 triviaItems, render each 5 blocks
     const [pageIndex, setPageIndex] = React.useState(1)
+
+    const [traLoading, setTraLoading] = React.useState(false)
 
 
     async function combineAllAnswers(incorrectAnswers, correctAnswer){
@@ -54,15 +57,18 @@ export default function GetStarted(props){
 
 // ! nextQues func -----------------------------------------------------
         async function nextQues(){
-            if(props.isJapanese && round===1){
-                setIsLoading(true)
-                console.log('nono')
+            if(props.isJapanese){
                 
-                // ! For setCurrentBlock -------------------------------------------------------------------------------
+                // !< First time, render 5 items and then load translated items , put them into arrays-------------
+                if (round===1) {
+                    console.log(isLoading)
+                    // setIsLoading(true)
+                setTraLoading(true)
+                
+                // !< For setCurrentBlock -------------------------------------------------------------------------------
                 const hol = holder.splice(0,1)
                 for (let index = 0; index < hol.length; index++) {
                     const element = hol[index];
-                    console.log(element)
 
                     const jerk = []
                     let ay=[]
@@ -70,7 +76,6 @@ export default function GetStarted(props){
                     for (let index = 0; index < element.length; index++) {
                         const el = element[index];
 
-                        console.log(el)
 
                     // TODO: translate and form question block object
                             await Translator(el[0].value)
@@ -95,11 +100,8 @@ export default function GetStarted(props){
                                         )
                         )
 
-                        console.log(bundler)
                         
                         jerk.push(bundler)
-                        // console.log(bundler.length)
-                        // console.log(firstB)
                     }
                            console.log(ay) 
                     console.log(jerk)
@@ -119,9 +121,9 @@ export default function GetStarted(props){
                     }
                     setCurrentBlock([qb])
                 }
-// ! For setCurrentBlock -------------------------------------------------------------------------------
+// !> For setCurrentBlock -------------------------------------------------------------------------------
 
-// ! For setCurrentAnsBlock -------------------------------------------------------------------
+// !< For setCurrentAnsBlock -------------------------------------------------------------------
                 let CAhol = CAHolder.splice(0,1)
                 CAhol = CAhol.flat()
                 console.log(CAhol)
@@ -137,17 +139,101 @@ export default function GetStarted(props){
 
 
                 
-                console.log(dog)
                 setCurrentAnsBlock([dog])
-                setIsLoading(false)
+                // setIsLoading(false)
+                // !> For setCurrentAnsBlock -------------------------------------------------------------------
 
-                setTimeout(() => {
-                    console.log('dragonborn')
-                }, 25000);
+                // !< load rest of them and put them into an array------------------------------------
+
+                // todo:< CAHolder translate---------------------------
+                const cat = []
+                while (CAHolder.length>0) {
+                    let bro = CAHolder.splice(0,1).flat()
+                    const cc = []
+                    for(let i=0; i<bro.length; i++){
+                        const el = bro[i]
+                        await Translator(el)
+                        .then(res=>
+                            cc.push(res.translatedText)
+                            )
+                    }
+                    cat.push(cc)
+
+                }
+                
+                setCAHolder(cat)
+                // todo:> CAHolder translate---------------------------
+
+                // todo:< Holder translate------------------------------
+                const bird = []
+                while(holder.length>0){
+                    const geo = holder.splice(0,1).flat()
+
+                    const snake = []
+                    const frog = []
+
+                    for (let index = 0; index < geo.length; index++) {
+                        const element = geo[index];
+                        
+                        // todo:< question part --------------
+                        await Translator(element[0].value)
+                        .then(res=>snake.push({...element[0], value:res.translatedText}))
+                        // todo:> question part --------------
 
 
-// ! For setCurrentAnsBlock -------------------------------------------------------------------
+                        // todo:< answers part -----------
+                        const todo = []
+                       await Promise.all(
+                            element[1].map(i=> 
+                                Translator(i.value)
+                                .then(val=>
+                                    todo.push({...i, value:val.translatedText})
+                                    )
+                                    .catch(err=>
+                                        console.log(err)
+                                        )
+                                        )
+                        )
+
+                        frog.push(todo)
+                        // todo:> answers part -----------
+                    }
+
+                    // todo:< combine question and answer part and then put in an array----------
+                    for (let index = 0; index < frog.length; index++) {
+                        bird.push([snake[index], frog[index]])
+                    }
+                    // todo:> combine question and answer part and then put in an array----------
+                }
+
+                const tiger =[]
+
+                while(bird.length>0){
+                    const vem = bird.splice(0,5)
+                    tiger.push(vem)
+                }
+                setTraHolder(tiger)
+                setTraLoading(false)
+                // todo:> Holder translate------------------------------
+
+
+                setAnswered(false)
+
+                return
+                // !> load rest of them and put them into an array------------------------------------
+            }
+            // !> First time, render 5 items and then load translated items , put them into arrays-------------
+
+            // !< splice translated array and set to state --------------------------
+            console.log(traHolder)
+                 setCurrentBlock(traHolder.splice(0,1))
+                 setCurrentAnsBlock(CAHolder.splice(0,1))
+            // !> splice translated array and set to state --------------------------
+
+
+
                     setAnswered(false)
+                    setIsLoading(false)
             }else{
 
                  setCurrentBlock(holder.splice(0,1))
@@ -155,14 +241,21 @@ export default function GetStarted(props){
                 setAnswered(false)
             }
         }
-console.log(currentAnsBlock)
-console.log(currentBlock)
 // ! nextQues func -----------------------------------------------------
 
     React.useEffect(()=>{
         setRound(pre=>pre+1)
-        if(round==0)return
-        if(life<1 || holder.length==0){
+        if(round===0)return
+
+        if(props.isJapanese){
+            // if(traLoading)return
+        if(life<1 || traHolder.length===0){
+            setDone(true)
+        }
+        return
+        }
+
+        if(life<1 || holder.length===0){
             setDone(true)
         }
     }, [triviaBlock])
@@ -292,7 +385,9 @@ console.log(currentBlock)
         }
         // const testy = set
         setHolder(blocks)
-        setIsLoading(false)
+        
+
+        if(!props.isJapanese)setIsLoading(false)
     } catch(e){console.error(e)}
 }
  getTriviaData()
@@ -514,7 +609,11 @@ const newBester = () =>{
                     </div>
 
                 <div className='bottom-buttons'>
-                    {!answered&&<button className='btn' onClick={checkAns}>Check Answers</button>}
+                    {
+                        traLoading?<h1>Loading rests...</h1>:
+                    !answered?<button className='btn' onClick={checkAns}>Check Answers</button>:
+                    ''
+                    }
                     {answered&&done? <button className='btn result' onClick={handleResult}>Result Page</button>:
                     life>0&&answered?<button className='btn' onClick={nextQues}>Next Page</button>:
                     ''}
