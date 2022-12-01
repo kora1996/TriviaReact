@@ -17,7 +17,7 @@ export default function GetStarted(props){
     const [score, setScore]=React.useState(0)
 
     const [allPossibleAnswers, setAllPossibleAnswers] = React.useState([])
-    const [isLoading, setIsLoading] = React.useState(false)
+    const [isLoading, setIsLoading] = React.useState(true)
     const [triviaBlock, setTriviaBlock] = React.useState([])
 
     const [holder, setHolder]= React.useState([])
@@ -140,7 +140,7 @@ export default function GetStarted(props){
 
                 
                 setCurrentAnsBlock([dog])
-                // setIsLoading(false)
+                setIsLoading(false)
                 // !> For setCurrentAnsBlock -------------------------------------------------------------------
 
                 // !< load rest of them and put them into an array------------------------------------
@@ -224,18 +224,22 @@ export default function GetStarted(props){
             }
             // !> First time, render 5 items and then load translated items , put them into arrays-------------
 
-            // !< splice translated array and set to state --------------------------
-            console.log(traHolder)
+            if(round>1){
+
+                // !< splice translated array and set to state --------------------------
+                console.log(traHolder)
                  setCurrentBlock(traHolder.splice(0,1))
                  setCurrentAnsBlock(CAHolder.splice(0,1))
-            // !> splice translated array and set to state --------------------------
-
-
-
-                    setAnswered(false)
-                    setIsLoading(false)
+                 // !> splice translated array and set to state --------------------------
+                 
+                 
+                 
+                 setAnswered(false)
+                 // setIsLoading(false)
+                }
             }else{
 
+                console.log(isLoading)
                  setCurrentBlock(holder.splice(0,1))
                  setCurrentAnsBlock(CAHolder.splice(0,1))
                 setAnswered(false)
@@ -265,7 +269,6 @@ export default function GetStarted(props){
         try{
             const url = `https://opentdb.com/api.php?amount=20&category=${props.formData.category}&difficulty=${props.formData.difficulty}`
 
-            setIsLoading(true)
             const resp = await axios.get(url)
 
 
@@ -387,10 +390,14 @@ export default function GetStarted(props){
         setHolder(blocks)
         
 
-        if(!props.isJapanese)setIsLoading(false)
+        if(props.isJapanese===true)setIsLoading(true)
+        else{
+            setIsLoading(false)
+        }
     } catch(e){console.error(e)}
 }
  getTriviaData()
+ console.log(isLoading)
 //  while(true){
 
 //      setTimeout(()=>console.log('hi'), 1000)
