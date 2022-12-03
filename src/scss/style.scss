@@ -85,6 +85,12 @@ header{
         color: white;
         background-image: linear-gradient(to bottom right, gold, blue);
     }
+
+    &.selection{
+        padding: .5rem;
+        margin: .5rem;
+        color: rgb(9, 121, 129);
+    }
 }
 
 

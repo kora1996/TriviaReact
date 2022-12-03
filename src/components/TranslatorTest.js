@@ -2,13 +2,13 @@ import React from 'react';
 import axios from 'axios';
 
 
-const Translator = async(item)=>{
+const Translator = async(item, targetLang)=>{
         const res = await fetch("https://libretranslate.de/translate", {
         method: "POST",
         body: JSON.stringify({
             q: item,
             source: "en",
-            target: "ja",
+            target: targetLang,
             format: "text",
             api_key: ""
         }),

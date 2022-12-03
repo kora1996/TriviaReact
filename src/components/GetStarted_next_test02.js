@@ -57,11 +57,10 @@ export default function GetStarted(props){
 
 // ! nextQues func -----------------------------------------------------
         async function nextQues(){
-            if(props.isJapanese){
+            if(props.formData.language!==null){
                 
                 // !< First time, render 5 items and then load translated items , put them into arrays-------------
                 if (round===1) {
-                    console.log(isLoading)
                     // setIsLoading(true)
                 setTraLoading(true)
                 
@@ -78,7 +77,7 @@ export default function GetStarted(props){
 
 
                     // TODO: translate and form question block object
-                            await Translator(el[0].value)
+                            await Translator(el[0].value, props.formData.language)
                                 .then(val=>{
                                     ay.push({...el[0], value:val.translatedText})
                                 })
@@ -90,7 +89,7 @@ export default function GetStarted(props){
                         
                        await Promise.all(
                             el[1].map(i=> 
-                                Translator(i.value)
+                                Translator(i.value, props.formData.language)
                                 .then(val=>
                                     bundler.push({...i, value:val.translatedText})
                                     )
@@ -103,8 +102,6 @@ export default function GetStarted(props){
                         
                         jerk.push(bundler)
                     }
-                           console.log(ay) 
-                    console.log(jerk)
                     // * [ [{value:---, id:---, isSelected:---},,,,,] *5]
 
                     // TODO: For currentBlock, concatinate above two items in a single array and return
@@ -126,12 +123,11 @@ export default function GetStarted(props){
 // !< For setCurrentAnsBlock -------------------------------------------------------------------
                 let CAhol = CAHolder.splice(0,1)
                 CAhol = CAhol.flat()
-                console.log(CAhol)
                 
                 const dog = []
                 for (let index = 0; index < CAhol.length; index++) {
                     const element = CAhol[index];
-                    await Translator(element)
+                    await Translator(element, props.formData.language)
                     .then(res=>
                         dog.push(res.translatedText)
                         )
@@ -152,7 +148,7 @@ export default function GetStarted(props){
                     const cc = []
                     for(let i=0; i<bro.length; i++){
                         const el = bro[i]
-                        await Translator(el)
+                        await Translator(el, props.formData.language)
                         .then(res=>
                             cc.push(res.translatedText)
                             )
@@ -176,7 +172,7 @@ export default function GetStarted(props){
                         const element = geo[index];
                         
                         // todo:< question part --------------
-                        await Translator(element[0].value)
+                        await Translator(element[0].value, props.formData.language)
                         .then(res=>snake.push({...element[0], value:res.translatedText}))
                         // todo:> question part --------------
 
@@ -185,7 +181,7 @@ export default function GetStarted(props){
                         const todo = []
                        await Promise.all(
                             element[1].map(i=> 
-                                Translator(i.value)
+                                Translator(i.value, props.formData.language)
                                 .then(val=>
                                     todo.push({...i, value:val.translatedText})
                                     )
@@ -227,7 +223,6 @@ export default function GetStarted(props){
             if(round>1){
 
                 // !< splice translated array and set to state --------------------------
-                console.log(traHolder)
                  setCurrentBlock(traHolder.splice(0,1))
                  setCurrentAnsBlock(CAHolder.splice(0,1))
                  // !> splice translated array and set to state --------------------------
@@ -238,8 +233,6 @@ export default function GetStarted(props){
                  // setIsLoading(false)
                 }
             }else{
-
-                console.log(isLoading)
                  setCurrentBlock(holder.splice(0,1))
                  setCurrentAnsBlock(CAHolder.splice(0,1))
                 setAnswered(false)
@@ -251,7 +244,7 @@ export default function GetStarted(props){
         setRound(pre=>pre+1)
         if(round===0)return
 
-        if(props.isJapanese){
+        if(props.formData.language!==null){
             // if(traLoading)return
         if(life<1 || traHolder.length===0){
             setDone(true)
@@ -267,7 +260,7 @@ export default function GetStarted(props){
     React.useEffect(()=>{
    async function getTriviaData(){
         try{
-            const url = `https://opentdb.com/api.php?amount=20&category=${props.formData.category}&difficulty=${props.formData.difficulty}`
+            const url = `https://opentdb.com/api.php?amount=20&category=${props.formData.category}`
 
             const resp = await axios.get(url)
 
@@ -390,14 +383,13 @@ export default function GetStarted(props){
         setHolder(blocks)
         
 
-        if(props.isJapanese===true)setIsLoading(true)
+        if(props.formData.language!==null)setIsLoading(true)
         else{
             setIsLoading(false)
         }
     } catch(e){console.error(e)}
 }
  getTriviaData()
- console.log(isLoading)
 //  while(true){
 
 //      setTimeout(()=>console.log('hi'), 1000)
@@ -444,7 +436,7 @@ export default function GetStarted(props){
 
 
                 question.push(
-                    <h1 key={i[0].id} >{removeCharacters(i[0].value)}</h1>
+                    <h1 key={i[0].id} >{i[0].value}</h1>
                 )
 
             i[1].map(ans=>
@@ -457,14 +449,14 @@ export default function GetStarted(props){
                 {backgroundColor:'greenyellow'}
 
 
-                anss.push(<button key={ans.id} onClick={(e)=>changeSelected(e, ans.id, i[0].id)} className='btn' style={style}>{removeCharacters(ans.value)}</button>)
+                anss.push(<button key={ans.id} onClick={(e)=>changeSelected(e, ans.id, i[0].id)} className='btn' style={style}>{ans.value}</button>)
                 }
                 )
                 const cardKey = nanoid()
 
-                function removeCharacters(question) {
-                    return question.replace(/(&quot\;)/g, "\"").replace(/(&rsquo\;)/g, "\"").replace(/(&#039\;)/g, "\'").replace(/(&amp\;)/g, "\"");
-                  }
+                // function removeCharacters(question) {
+                //     return question.replace(/(&quot\;)/g, "\"").replace(/(&rsquo\;)/g, "\"").replace(/(&#039\;)/g, "\'").replace(/(&amp\;)/g, "\"");
+                //   }
                   
                   return(
                       <div key={cardKey} className="questionCard">

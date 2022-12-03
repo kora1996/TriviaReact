@@ -14,18 +14,29 @@ export default function App(){
 
     const [formData, setFormData] = React.useState(
       {
-        difficulty:'',
+        language:null,
         category:''
       }
     )
 
-    const langSwitch = ()=>{
-      setIsJapanese(prevState=>!prevState)
-    }
-    console.log(isJapanese)
+    // const langSwitch = ()=>{
+    //   setIsJapanese(prevState=>!prevState)
+    // }
 
     const handleChange = (e)=>{
       const {name, value} = e.target
+
+      if(value==='en'){
+
+       setFormData(prevState=>{
+        return{ 
+          ...prevState,
+          language:null
+         }
+       })
+       return
+      }
+
       setFormData(prevState=>{
         return {
           ...prevState,
@@ -40,7 +51,7 @@ export default function App(){
 
   const restart = ()=>{
     setStart(false)
-    setIsJapanese(false)
+    // setIsJapanese(false)
   }
 
 
@@ -51,8 +62,8 @@ export default function App(){
                 <h2>Trivia Pond</h2>
             </header>
             {start?
-            <GetStart formData={formData} restart={restart} isJapanese={isJapanese}/>
-            :<Start getStarted={getStarted} handleChange={handleChange} formData={formData} langSwitch={langSwitch}/>}
+            <GetStart formData={formData} restart={restart} />
+            :<Start getStarted={getStarted} handleChange={handleChange} formData={formData} />}
             {/* {triviaItems} */}
 
         </div>
