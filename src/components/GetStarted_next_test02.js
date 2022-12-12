@@ -6,6 +6,10 @@ import FinishPage from './Finish';
 import { TranslatorCorrectAns, Translator , TranslatorPlane} from './TranslatorTest';
 
 export default function GetStarted(props){
+
+
+    const gs = document.getElementById("getstarted");
+
     const [resultPage, setResultPage] = React.useState(false)
     const [triviaQuestions, setTriviaQuestions] = React.useState([])
 
@@ -236,6 +240,7 @@ export default function GetStarted(props){
                  setCurrentBlock(holder.splice(0,1))
                  setCurrentAnsBlock(CAHolder.splice(0,1))
                 setAnswered(false)
+             window.scroll(0,0)
             }
         }
 // ! nextQues func -----------------------------------------------------
@@ -429,7 +434,7 @@ export default function GetStarted(props){
 
             
         const triviaItems = currentBlock.map(item=>{
-            let c = item.map(i=>{
+            let c = item.map((i, index)=>{
 
                 const question = []
                 const anss = []
@@ -459,12 +464,12 @@ export default function GetStarted(props){
                 //   }
                   
                   return(
-                      <div key={cardKey} className="questionCard">
-                    {question}
-                    <hr />
-                    <div className="answers">
-                    {anss}
-                    </div>
+                    <div key={cardKey} onMouseOver={()=>gs.dataset.activeIndex = index} className="questionCard">
+                        {question}
+                        <hr />
+                        <div className="answers">
+                        {anss}
+                        </div>
                     </div>
                 )
             }) 
@@ -581,46 +586,53 @@ const newBester = () =>{
     setBestScore(JSON.parse(localStorage.getItem('bestScore')))
     setNewBest(false)
 }
+
+
         
 
     return(
-        <div className="getstarted">
+        <div id="getstarted">
             {resultPage?
             <FinishPage score={score} king={king} restart={restart} bestScore={bestScore} newBest={newBest} newBester={newBester}/>:
-            <div>
+            <div className='main-container'>
                 {!isLoading&&
                 <div className='status'>
-                <div className='statusBlock'>
-                    <h1>Your life: {life}</h1>
-                </div>
+                    <div className='statusBlock'>
+                        <h1>Your life: {life}</h1>
+                    </div>
 
-                <div className="statusBlock">
-                    <h1>Your Score: {score}</h1>
-                </div>
+                    <div className="statusBlock">
+                        <h1>Your Score: {score}</h1>
+                    </div>
 
                 </div>
                 }
 
-                {isLoading?<h1>Loading...</h1>:
+                {isLoading?<h1 className='loading'>Loading...</h1>:
                 <div>
+
                     <div className="questions">
                         {triviaItems}
                     </div>
+                        <div id="menu-background-pattern"></div>
+                        <div id="menu-background-image"></div>
 
-                <div className='bottom-buttons'>
-                    {
-                        traLoading?<h1>Loading rests...</h1>:
-                    !answered?<button className='btn' onClick={checkAns}>Check Answers</button>:
-                    ''
-                    }
-                    {answered&&done? <button className='btn result' onClick={handleResult}>Result Page</button>:
-                    life>0&&answered?<button className='btn' onClick={nextQues}>Next Page</button>:
-                    ''}
-                </div>
+                    <div className='bottom-buttons'>
+                        {
+                            traLoading?<h1>Loading rests...</h1>:
+                        !answered?<button className='btn' onClick={checkAns}>Check Answers</button>:
+                        ''
+                        }
+                        {answered&&done? <button className='btn result' onClick={handleResult}>Result Page</button>:
+                        life>0&&answered?<button className='btn' onClick={nextQues}>Next Page</button>:
+                        ''}
+                    </div>
+
                 </div>
                 }
             </div>
         }
+
         </div>
     )
 }

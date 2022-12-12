@@ -1,10 +1,19 @@
 @use './components/index';
 
+html{
+    min-height: 100%;
+    position: relative;
+}
 
 *{
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+}
+
+body{
+    height: 100%;
+    background-color: rgb(20,20,20,);
 }
 
 header{
@@ -17,17 +26,153 @@ header{
 }
 
 .app{
-    height: 100vh;
+    height: 100%;
+    overflow: hidden;
 }
+
+#getstarted{
+    position: relative;
+
+    &[data-active-index='0']  #menu-background-pattern{
+        background-position: 50% -40%;
+    }
+
+    &[data-active-index='1']  #menu-background-pattern{
+        background-position: 10% 40%;
+    }
+
+    &[data-active-index='2']  #menu-background-pattern{
+        background-position: -50% 50%;
+    }
+
+    &[data-active-index='3']  #menu-background-pattern{
+        background-position: 10% -30%;
+    }
+
+    &[data-active-index='4']  #menu-background-pattern{
+        background-position: -40% -100%;
+    }
+
+    &[data-active-index="0"]  #menu-background-image {
+        background-position: center 45%;
+      }
+
+    &[data-active-index="1"]  #menu-background-image {
+        background-position: center 50%;
+      }
+
+    &[data-active-index="2"]  #menu-background-image {
+        background-position: center 55%;
+      }
+
+    &[data-active-index="3"]  #menu-background-image {
+        background-position: center 60%;
+      }
+
+    &[data-active-index="4"]  #menu-background-image {
+        background-position: center 65%;
+      }
+}
+
+@media (max-width: 360px) {
+    
+    #getstarted{
+        position: relative;
+
+        &[data-active-index='0']  #menu-background-pattern{
+            background-position: center -20%;
+        }
+
+        &[data-active-index='1']  #menu-background-pattern{
+            background-position: center -40%;
+        }
+
+        &[data-active-index='2']  #menu-background-pattern{
+            background-position: 0% -60%;
+        }
+
+        &[data-active-index='3']  #menu-background-pattern{
+            background-position: 0% -80%;
+        }
+
+        &[data-active-index='4']  #menu-background-pattern{
+            background-position: 0% -100%;
+        }
+
+        &[data-active-index="0"]  #menu-background-image {
+            background-position: center 90%;
+        }
+
+        &[data-active-index="1"]  #menu-background-image {
+            background-position: center 40%;
+        }
+
+        &[data-active-index="2"]  #menu-background-image {
+            background-position: center 60%;
+        }
+
+        &[data-active-index="3"]  #menu-background-image {
+            background-position: center 80%;
+        }
+
+        &[data-active-index="4"]  #menu-background-image {
+            background-position: center 100%;
+        }
+    }
+}
+
+#menu-background-pattern {
+    background-image: radial-gradient(
+      rgba(255, 255, 255, 0.445) 3%, 
+      transparent 9%
+    );
+    background-position: 0% center;
+    background-size: 12vmin 12vmin;
+    height: 100%;
+    left: 0px;
+    position: absolute;
+    top: 0px;
+    // bottom: 0;
+    transition: opacity 800ms ease, 
+      background-size 800ms ease,
+      left 800ms ease,
+      background-position 2s ease;
+    width: 100vw;
+    z-index: -1;
+  }
+
+  #menu-background-image {
+    background-image: url("https://images.unsplash.com/photo-1484589065579-248aad0d8b13?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=459&q=80");
+    background-position: center center;
+    // background-size: auto;
+    background-size: 130vmax;
+    height: 100%;
+    left: 0px;
+    opacity: 0.65;
+    position: absolute;
+    top: 0px;
+    transition: opacity 800ms ease,
+        background-size 800ms ease,
+        background-position 800ms ease;
+    width: 100%;
+    z-index: -2;
+  }
+
+
 
 .start{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 90%;
+    height: 90vh;
     gap: .8rem;
-    background-image: linear-gradient(to bottom right, lightgreen, yellow);
+    // background-image: linear-gradient(to bottom right, lightgreen, yellow);
+
+    background: linear-gradient(-45deg, #ee7752, #2940a7, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 10s ease infinite;
+
     box-shadow: 0 0 20px 9px white inset;
     color: darkblue;
 
@@ -40,10 +185,43 @@ header{
         border-radius: 45%;
         border: none ;
         box-shadow: 2px 2px 2px 2px black;
+
+    }
+}
+
+.main-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.questions{
+
+    &:hover > .questionCard {
+        opacity: 0.3;
+    }
+
+    &:hover > .questionCard:hover {
+        opacity: 1;
+    }
+
+    &:hover ~ #menu-background-pattern {
+        // left: 5vmin;
+        background-size: 11vmin 11vmin;
+        opacity: 0.5;
+    }
+
+    &:hover ~ #menu-background-image {
+        background-size: 160vmax;
+        // opacity: 0.1;
     }
 }
 
 .questionCard{
+    font-family: 'Alegreya', serif;;
+    color: #fff;
     display: flex;
     flex-direction: column;
     margin: 1rem;
@@ -51,6 +229,7 @@ header{
     gap: .8rem;
     border: 1px solid grey;
     border-radius: 10px;
+
     .answers{
         display: flex;
         // flex-grow: 1;
@@ -66,6 +245,9 @@ header{
             border-radius: 10px;
         }
     }
+
+
+
 }
 
 .btn{
@@ -73,9 +255,9 @@ header{
     border: none;
     border-radius: 10px;
     box-shadow: 6px 6px 0 green;
-    &:hover{
-        cursor: pointer;
-    }
+    transition: background-image .5s;
+
+    
     &:active{
         transform: translateX(2px) translateY(2px);
         box-shadow: 4px 4px 0 green;
@@ -85,11 +267,17 @@ header{
         color: white;
         background-image: linear-gradient(to bottom right, gold, blue);
     }
-
+    
     &.selection{
         padding: .5rem;
         margin: .5rem;
         color: rgb(9, 121, 129);
+    }
+
+    &:hover{
+        cursor: pointer;
+        background-image: linear-gradient(to bottom right, orange, blue);
+            color: white;
     }
 }
 
@@ -113,6 +301,7 @@ header{
         // transform: translateX(2px) translateY(2px);
         box-shadow: 4px 4px 0 gray;
         }
+
     }
 }
 
@@ -128,9 +317,6 @@ header{
     color: darkblue;
 }
 
-.questions{
-    margin: 1rem 2rem;
-}
 
 .status{
     margin: 1rem 2rem;
@@ -145,4 +331,16 @@ header{
         color: gold;
         background-image: linear-gradient(to bottom right, purple, red);
     }
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }

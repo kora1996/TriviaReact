@@ -47,7 +47,7 @@ export default function FinishPage(props){
             }
             
             <h1>current best score is {props.bestScore.score} by {props.bestScore.name} on {props.bestScore.theDay}</h1>
-            <button className='btn result' onClick={()=>props.restart()}>Re-start</button>
+            <button className='btn' onClick={()=>props.restart()}>Re-start</button>
             </div>
         }
         </div>

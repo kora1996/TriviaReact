@@ -1,4 +1,4 @@
-/* The switch - the box around the slider */
+@import url("https://fonts.googleapis.com/css?family=Paytone+One"); /* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
@@ -79,9 +79,6 @@ input:checked + .slider:before {
   position: relative;
   font-family: Arial, Helvetica, sans-serif;
 }
-.custom-select select {
-  display: none;
-}
 
 .select-selected {
   background-color: dodgerblue;
@@ -97,10 +94,210 @@ input:checked + .slider:before {
   border-color: #fff transparent transparent transparent;
 }
 
+.loader-container {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  animation: scaleUp 0.5s linear;
+  transform: scale(0);
+  pointer-events: none;
+  opacity: 0;
+}
+.loader-container .loader {
+  background: #ff0c0c;
+  background: linear-gradient(50deg, #ff0c0c, #21d400);
+  border-radius: 10px;
+  filter: hue-rotate(0deg);
+  animation: filterHue 2.5s linear infinite;
+  height: 100%;
+  width: 100%;
+  transform: rotate(0deg);
+}
+.loader-container .loader::after {
+  content: "";
+  position: absolute;
+  height: 80px;
+  width: 80px;
+  left: 10px;
+  top: 10px;
+  border-radius: 100%;
+}
+
+@-webkit-keyframes filterHue2 {
+  50% {
+    filter: hue-rotate(1000deg);
+  }
+  100% {
+    filter: hue-rotate(2000deg);
+  }
+}
+@-moz-keyframes filterHue2 {
+  50% {
+    filter: hue-rotate(1000deg);
+  }
+  100% {
+    filter: hue-rotate(2000deg);
+  }
+}
+@-ms-keyframes filterHue2 {
+  50% {
+    filter: hue-rotate(1000deg);
+  }
+  100% {
+    filter: hue-rotate(2000deg);
+  }
+}
+@keyframes filterHue2 {
+  50% {
+    filter: hue-rotate(1000deg);
+  }
+  100% {
+    filter: hue-rotate(2000deg);
+  }
+}
+@-webkit-keyframes filterHue {
+  50% {
+    filter: hue-rotate(1000deg);
+  }
+  100% {
+    filter: hue-rotate(2000deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes filterHue {
+  50% {
+    filter: hue-rotate(1000deg);
+  }
+  100% {
+    filter: hue-rotate(2000deg);
+    transform: rotate(360deg);
+  }
+}
+@-ms-keyframes filterHue {
+  50% {
+    filter: hue-rotate(1000deg);
+  }
+  100% {
+    filter: hue-rotate(2000deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes filterHue {
+  50% {
+    filter: hue-rotate(1000deg);
+  }
+  100% {
+    filter: hue-rotate(2000deg);
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes scaleUp {
+  50% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.25);
+  }
+}
+@-moz-keyframes scaleUp {
+  50% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.25);
+  }
+}
+@-ms-keyframes scaleUp {
+  50% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.25);
+  }
+}
+@keyframes scaleUp {
+  50% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.25);
+  }
+}
+@supports (-ms-ime-align: auto) {
+  p {
+    color: #21d400;
+    background: transparent;
+    mix-blend-mode: lighten;
+    font-size: 30px;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 100px;
+    animation: filterHue2 2s linear infinite;
+  }
+  p::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: transparent;
+  }
+}
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  p {
+    color: #ff447c;
+    background: transparent;
+    mix-blend-mode: lighten;
+    font-size: 30px;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 100px;
+    animation: filterHue2 2s linear infinite;
+  }
+  p::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: transparent;
+  }
+  .loader {
+    background: linear-gradient(50deg, rgb(240, 0, 80), #2380ff) !important;
+  }
+}
+html {
+  min-height: 100%;
+  position: relative;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+body {
+  height: 100%;
+  background-color: rgb(20, 20, 20);
 }
 
 header {
@@ -113,7 +310,104 @@ header {
 }
 
 .app {
-  height: 100vh;
+  height: 100%;
+  overflow: hidden;
+}
+
+#getstarted {
+  position: relative;
+}
+#getstarted[data-active-index="0"] #menu-background-pattern {
+  background-position: 50% -40%;
+}
+#getstarted[data-active-index="1"] #menu-background-pattern {
+  background-position: 10% 40%;
+}
+#getstarted[data-active-index="2"] #menu-background-pattern {
+  background-position: -50% 50%;
+}
+#getstarted[data-active-index="3"] #menu-background-pattern {
+  background-position: 10% -30%;
+}
+#getstarted[data-active-index="4"] #menu-background-pattern {
+  background-position: -40% -100%;
+}
+#getstarted[data-active-index="0"] #menu-background-image {
+  background-position: center 45%;
+}
+#getstarted[data-active-index="1"] #menu-background-image {
+  background-position: center 50%;
+}
+#getstarted[data-active-index="2"] #menu-background-image {
+  background-position: center 55%;
+}
+#getstarted[data-active-index="3"] #menu-background-image {
+  background-position: center 60%;
+}
+#getstarted[data-active-index="4"] #menu-background-image {
+  background-position: center 65%;
+}
+
+@media (max-width: 360px) {
+  #getstarted {
+    position: relative;
+  }
+  #getstarted[data-active-index="0"] #menu-background-pattern {
+    background-position: center -20%;
+  }
+  #getstarted[data-active-index="1"] #menu-background-pattern {
+    background-position: center -40%;
+  }
+  #getstarted[data-active-index="2"] #menu-background-pattern {
+    background-position: 0% -60%;
+  }
+  #getstarted[data-active-index="3"] #menu-background-pattern {
+    background-position: 0% -80%;
+  }
+  #getstarted[data-active-index="4"] #menu-background-pattern {
+    background-position: 0% -100%;
+  }
+  #getstarted[data-active-index="0"] #menu-background-image {
+    background-position: center 90%;
+  }
+  #getstarted[data-active-index="1"] #menu-background-image {
+    background-position: center 40%;
+  }
+  #getstarted[data-active-index="2"] #menu-background-image {
+    background-position: center 60%;
+  }
+  #getstarted[data-active-index="3"] #menu-background-image {
+    background-position: center 80%;
+  }
+  #getstarted[data-active-index="4"] #menu-background-image {
+    background-position: center 100%;
+  }
+}
+#menu-background-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.445) 3%, transparent 9%);
+  background-position: 0% center;
+  background-size: 12vmin 12vmin;
+  height: 100%;
+  left: 0px;
+  position: absolute;
+  top: 0px;
+  transition: opacity 800ms ease, background-size 800ms ease, left 800ms ease, background-position 2s ease;
+  width: 100vw;
+  z-index: -1;
+}
+
+#menu-background-image {
+  background-image: url("https://images.unsplash.com/photo-1484589065579-248aad0d8b13?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=459&q=80");
+  background-position: center center;
+  background-size: 130vmax;
+  height: 100%;
+  left: 0px;
+  opacity: 0.65;
+  position: absolute;
+  top: 0px;
+  transition: opacity 800ms ease, background-size 800ms ease, background-position 800ms ease;
+  width: 100%;
+  z-index: -2;
 }
 
 .start {
@@ -121,9 +415,11 @@ header {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 90%;
+  height: 90vh;
   gap: 0.8rem;
-  background-image: linear-gradient(to bottom right, lightgreen, yellow);
+  background: linear-gradient(-45deg, #ee7752, #2940a7, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
   box-shadow: 0 0 20px 9px white inset;
   color: darkblue;
 }
@@ -138,7 +434,30 @@ header {
   box-shadow: 2px 2px 2px 2px black;
 }
 
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.questions:hover > .questionCard {
+  opacity: 0.3;
+}
+.questions:hover > .questionCard:hover {
+  opacity: 1;
+}
+.questions:hover ~ #menu-background-pattern {
+  background-size: 11vmin 11vmin;
+  opacity: 0.5;
+}
+.questions:hover ~ #menu-background-image {
+  background-size: 160vmax;
+}
+
 .questionCard {
+  font-family: "Alegreya", serif;
+  color: #fff;
   display: flex;
   flex-direction: column;
   margin: 1rem;
@@ -164,9 +483,7 @@ header {
   border: none;
   border-radius: 10px;
   box-shadow: 6px 6px 0 green;
-}
-.btn:hover {
-  cursor: pointer;
+  transition: background-image 0.5s;
 }
 .btn:active {
   transform: translateX(2px) translateY(2px);
@@ -180,6 +497,11 @@ header {
   padding: 0.5rem;
   margin: 0.5rem;
   color: rgb(9, 121, 129);
+}
+.btn:hover {
+  cursor: pointer;
+  background-image: linear-gradient(to bottom right, orange, blue);
+  color: white;
 }
 
 .bottom-buttons {
@@ -211,10 +533,6 @@ header {
   color: darkblue;
 }
 
-.questions {
-  margin: 1rem 2rem;
-}
-
 .status {
   margin: 1rem 2rem;
   display: flex;
@@ -227,6 +545,18 @@ header {
   box-shadow: 5px 5px 0 orange;
   color: gold;
   background-image: linear-gradient(to bottom right, purple, red);
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
