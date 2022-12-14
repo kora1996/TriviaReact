@@ -235,6 +235,7 @@ export default function GetStarted(props){
                  
                  setAnswered(false)
                  // setIsLoading(false)
+                window.scroll(0,0)
                 }
             }else{
                  setCurrentBlock(holder.splice(0,1))
@@ -574,11 +575,16 @@ export default function GetStarted(props){
 }
 
 const handleResult = ()=>{
+    if(score<1){ 
+    setResultPage(true)
+        return
+    }
+
     if(bestScore===null || score>bestScore.score){
         setNewBest(true)
         setKing(true)
     }
-
+    
     setResultPage(true)
 }
 
@@ -609,7 +615,7 @@ const newBester = () =>{
                 }
 
                 {isLoading?<h1 className='loading'>Loading...</h1>:
-                <div>
+                <div >
 
                     <div className="questions">
                         {triviaItems}
@@ -619,7 +625,7 @@ const newBester = () =>{
 
                     <div className='bottom-buttons'>
                         {
-                            traLoading?<h1>Loading rests...</h1>:
+                            traLoading?<h1 className='loading'>Loading rests...</h1>:
                         !answered?<button className='btn' onClick={checkAns}>Check Answers</button>:
                         ''
                         }

@@ -19,35 +19,41 @@ export default function FinishPage(props){
 
 
     return(
-        <div className="finishPage">
+        <div className="start">
 
             {props.newBest?
-                <div>
+                <div className='fin-text'>
                     <h1>Congrats! It's a new Best Score!</h1>
                     <h1>Please tell me your name!</h1>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} className='simple-flex'>
                         <input type="text"
+                        className='text-box'
                         value={theName}
                         required
-                        placeholder='Your name'
+                        placeholder='Type your name here'
                         onChange={(e)=>setTheName(e.target.value)} />
-                        <button>done</button>
+                        <button className='btn'>Register</button>
                     </form>
                 </div>:
 
-            <div>
+            <div className='fin-text'>
+                    <h1>You scored {props.score} points!</h1>
 
-            <p>You scored {props.score} points!</p>
+                    {
+                        props.king?<h1>Congrats! You are the KING!</h1>:
+                        props.score<5?<h1>I like the way you don't care about the world...</h1>:
+                        props.score<10?<h1>Not bad! but either good</h1>:
+                        props.score<=15?<h1>You were the smartest kid in a class, weren't you?</h1>:
+                        <h1>Please tell me you will use your mega-mind for good.</h1>
+                    }
+                    <br /> 
 
-            {
-                props.king?<h1>Congrats! You are the KING!</h1>:
-                props.score<5?<h1>Wow... You don't really know Trivia, don't you?</h1>:
-                props.score<10?<h1>Nah, do better next time</h1>:
-                <h1>OMG, You are so Awesome!</h1>
-            }
-            
-            <h1>current best score is {props.bestScore.score} by {props.bestScore.name} on {props.bestScore.theDay}</h1>
-            <button className='btn' onClick={()=>props.restart()}>Re-start</button>
+                    {props.bestScore?
+                    <h1>Current best score is {props.bestScore.score} by {props.bestScore.name} on {props.bestScore.theDay}</h1>
+                    :null
+                }
+                    <br />
+                    <button className='btn' onClick={()=>props.restart()}>Re-start</button>
             </div>
         }
         </div>

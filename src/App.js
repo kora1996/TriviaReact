@@ -80,9 +80,9 @@ export default function App(){
 
     return(
         <div className="app">
-            <header>
+            {/* <header>
                 <h2>Trivia Pond</h2>
-            </header>
+            </header> */}
             {start?
             <GetStart formData={formData} restart={restart} />
             :<Start getStarted={getStarted} handleChange={handleChange} formData={formData} />}

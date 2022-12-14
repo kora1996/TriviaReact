@@ -3,7 +3,10 @@ import axios from 'axios';
 
 
 const Translator = async(item, targetLang)=>{
-        const res = await fetch("https://libretranslate.de/translate", {
+
+    // * mirror sites can be found here https://github.com/LibreTranslate/LibreTranslate
+        const url = "https://translate.argosopentech.com/translate"
+        const res = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
             q: item,
