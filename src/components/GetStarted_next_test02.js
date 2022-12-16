@@ -1,20 +1,21 @@
 import React from 'react';
 import axios from 'axios';
-import Trivia from './Trivia';
+// import Trivia from './Trivia';
 import { nanoid } from 'nanoid';
 import FinishPage from './Finish';
 import { TranslatorCorrectAns, Translator , TranslatorPlane} from './TranslatorTest';
 
 export default function GetStarted(props){
 
-
+    // * for parallax effect パララックスエフェクト用
     const gs = document.getElementById("getstarted");
 
     const [resultPage, setResultPage] = React.useState(false)
-    const [triviaQuestions, setTriviaQuestions] = React.useState([])
+    // const [triviaQuestions, setTriviaQuestions] = React.useState([])
 
+    // 
     const [CAHolder, setCAHolder] = React.useState([])
-    const [correctAnswer, setCorrectAnswer] = React.useState('')
+    // const [correctAnswer, setCorrectAnswer] = React.useState('')
     const [currentAnsBlock, setCurrentAnsBlock] = React.useState('')
 
 
@@ -39,7 +40,7 @@ export default function GetStarted(props){
 
     const [king, setKing] = React.useState(false)
     // todo: for line 94 triviaItems, render each 5 blocks
-    const [pageIndex, setPageIndex] = React.useState(1)
+    // const [pageIndex, setPageIndex] = React.useState(1)
 
     const [traLoading, setTraLoading] = React.useState(false)
 
@@ -51,6 +52,7 @@ export default function GetStarted(props){
             })
         allAnswers.push(correctAnswer)
 
+            // * randamize the order 並びをミックスする
         allAnswers.sort(()=>Math.random()-0.5)
         // setAllPossibleAnswers(allAnswers)
         return allAnswers
@@ -61,15 +63,21 @@ export default function GetStarted(props){
 
 // ! nextQues func -----------------------------------------------------
         async function nextQues(){
+
+            // * if it's not English 、もし英語じゃない場合
             if(props.formData.language!==null){
                 
-                // !< First time, render 5 items and then load translated items , put them into arrays-------------
+                // !< First time, render 5 items and then load translated items , put them into arrays------------- もし最初のロードの場合、５問を先に翻訳して、残りはレンダーした後に翻訳する
                 if (round===1) {
                     // setIsLoading(true)
                 setTraLoading(true)
                 
-                // !< For setCurrentBlock -------------------------------------------------------------------------------
+                // !< For setCurrentBlock --------------------　初めの５問を作業
                 const hol = holder.splice(0,1)
+                // * splice method returns an array. スプライスメソッドはアレイを返す
+
+                // * to go down one level lower. could use flatter method but didn't know at the moment.
+                // * 一レベル落とすためのループ。書いたときの段階でフラッターメソッドの事を知らなかった
                 for (let index = 0; index < hol.length; index++) {
                     const element = hol[index];
 
@@ -80,7 +88,7 @@ export default function GetStarted(props){
                         const el = element[index];
 
 
-                    // TODO: translate and form question block object
+                    // TODO: translate and form question block object 翻訳してクエスチョンのオブジェクト形式にする
                             await Translator(el[0].value, props.formData.language)
                                 .then(val=>{
                                     ay.push({...el[0], value:val.translatedText})
@@ -88,9 +96,11 @@ export default function GetStarted(props){
 
                         // * {value:-----, id:-------}
 
-                        // TODO: iterate throught, translate and form answer block object and put in a array
+                        // TODO: iterate through, translate and form answer block object and put in a array
+                        // todo: 答えのブロックはもう１段界ネストかされており、そこから答えオブジェクトの形式を作る。
                         const bundler = []
                         
+                                // * iterate through array and translate each. ループして翻訳する。
                        await Promise.all(
                             el[1].map(i=> 
                                 Translator(i.value, props.formData.language)
@@ -106,14 +116,11 @@ export default function GetStarted(props){
                         
                         jerk.push(bundler)
                     }
-                    // * [ [{value:---, id:---, isSelected:---},,,,,] *5]
+                    // * each ans block should be like this [ [{value:---, id:---, isSelected:---},,,,,] *5]
 
-                    // TODO: For currentBlock, concatinate above two items in a single array and return
+                    // TODO: For question and ans currentBlock, concatinate above two items in a single array and return
                     // *[{obj}, [{obj}*5]]
 
-                    //  TODO: For currentAnsBlock, 
-                    // * [ ['ans','ans',,,,]*5 ]
-                    // element.map(i=>console.log(i[1]) )
 
                     //  TODO: making final form block
                     const qb = []
@@ -208,11 +215,14 @@ export default function GetStarted(props){
 
                 const tiger =[]
 
+                // * making a block made of an question and its answer choices. クイズと答えのブロックを作る。
                 while(bird.length>0){
                     const vem = bird.splice(0,5)
                     tiger.push(vem)
                 }
                 setTraHolder(tiger)
+
+                // * hide nextQues button until finish translating. 翻訳が終わるまで次のクイズボタンを隠す
                 setTraLoading(false)
                 // todo:> Holder translate------------------------------
 
@@ -224,6 +234,7 @@ export default function GetStarted(props){
             }
             // !> First time, render 5 items and then load translated items , put them into arrays-------------
 
+            // * just cut the block in a chunk size
             if(round>1){
 
                 // !< splice translated array and set to state --------------------------
@@ -247,8 +258,8 @@ export default function GetStarted(props){
 // ! nextQues func -----------------------------------------------------
 
     React.useEffect(()=>{
-        setRound(pre=>pre+1)
         if(round===0)return
+        setRound(pre=>pre+1)
 
         if(props.formData.language!==null){
             // if(traLoading)return

@@ -6,19 +6,18 @@ import GetStart from './components/GetStarted_next_test02';
 
 export default function App(){
 
+  // * < for mouse effect  マウスエフェクト--------------------------------------
   window.addEventListener("mousemove", function (e) {
 
     // to cut out the oldest set
-    var to_append = document.getElementsByClassName('loader-container')[0];
-    // var all = document.getElementsByClassName('loader-container');
-    // console.log(e)
+    const to_append = document.getElementsByClassName('loader-container')[0];
   
-    var parent_div = document.createElement('div');
+    const parent_div = document.createElement('div');
     parent_div.className = "loader-container";
-    var inner_div = document.createElement('div');
+    const inner_div = document.createElement('div');
     inner_div.className = "loader";
     parent_div.appendChild(inner_div)
-    var d = document.body.appendChild(parent_div);
+     document.body.appendChild(parent_div);
   
     parent_div.style.left = (e.pageX - 15)+'px';
     parent_div.style.top = (e.pageY - 15)+'px';
@@ -27,24 +26,26 @@ export default function App(){
       document.body.removeChild(to_append)
     }
   });
+  // * > for mouse effect --------------------------------------
 
     const [start, setStart] = React.useState(false)
-    const [isJapanese, setIsJapanese] = React.useState(false)
+    // const [isJapanese, setIsJapanese] = React.useState(false)
 
-    const [category, setCategory] = React.useState('')
-    const [difficulty, setDifficulty] = React.useState('')
+    // const [category, setCategory] = React.useState('')
+    // const [difficulty, setDifficulty] = React.useState('')
 
     const [formData, setFormData] = React.useState(
       {
+        // * to send to libreTranslate
         language:null,
+        
+        // * to send to triviaDB
         category:''
       }
     )
 
-    // const langSwitch = ()=>{
-    //   setIsJapanese(prevState=>!prevState)
-    // }
 
+    // * for changing formData at StartMenu.js フォームデータ編集用-----------------
     const handleChange = (e)=>{
       const {name, value} = e.target
 
@@ -67,27 +68,23 @@ export default function App(){
       })
 
     }
+
+    // * for switching component render. コンポーネントのレンダーを変えるため-----------
   const getStarted = ()=>{
     setStart(true)
   }
 
   const restart = ()=>{
     setStart(false)
-    // setIsJapanese(false)
   }
 
 
 
     return(
         <div className="app">
-            {/* <header>
-                <h2>Trivia Pond</h2>
-            </header> */}
             {start?
             <GetStart formData={formData} restart={restart} />
             :<Start getStarted={getStarted} handleChange={handleChange} formData={formData} />}
-            {/* {triviaItems} */}
-
         </div>
     )
 }

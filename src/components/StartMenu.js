@@ -9,13 +9,6 @@ import React from 'react';
     return(
         <div className="start">
 
-            {/* <div className='switcher' onChange={()=>props.langSwitch()}>
-                <label class="switch">
-                <input type="checkbox" />
-                <span class="slider round"></span>
-                </label>
-            </div> */}
-
             <h1>Trivia Pond</h1>
             <p>Let's check your Trivia!</p>
             <button className='btn' onClick={props.getStarted}>Start Trivia</button>
@@ -102,8 +95,6 @@ import React from 'react';
                             <option value="tr">Turkish</option>
                             <option value="uk">Ukranian</option>
 
-                            {/* <option value="medium">Medium</option>
-                            <option value="hard">Hard</option> */}
                         </select>
                     </label>
 
