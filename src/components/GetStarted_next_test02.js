@@ -97,7 +97,7 @@ export default function GetStarted(props){
                         // * {value:-----, id:-------}
 
                         // TODO: iterate through, translate and form answer block object and put in a array
-                        // todo: 答えのブロックはもう１段界ネストかされており、そこから答えオブジェクトの形式を作る。
+                        // todo: 答えのブロックはもう１段界ネスト化されており、そこから答えオブジェクトの形式を作る。
                         const bundler = []
                         
                                 // * iterate through array and translate each. ループして翻訳する。
@@ -118,7 +118,7 @@ export default function GetStarted(props){
                     }
                     // * each ans block should be like this [ [{value:---, id:---, isSelected:---},,,,,] *5]
 
-                    // TODO: For question and ans currentBlock, concatinate above two items in a single array and return
+                    // TODO: For question and ans currentBlock, concatenate above two items in a single array and return.  クイズと答えの現在形のブロックを一つのアレイにする。
                     // *[{obj}, [{obj}*5]]
 
 
@@ -131,7 +131,7 @@ export default function GetStarted(props){
                 }
 // !> For setCurrentBlock -------------------------------------------------------------------------------
 
-// !< For setCurrentAnsBlock -------------------------------------------------------------------
+// !< For setCurrentAnsBlock -------------------------------- 正解の答えをアレイ化する。
                 let CAhol = CAHolder.splice(0,1)
                 CAhol = CAhol.flat()
                 
@@ -150,9 +150,9 @@ export default function GetStarted(props){
                 setIsLoading(false)
                 // !> For setCurrentAnsBlock -------------------------------------------------------------------
 
-                // !< load rest of them and put them into an array------------------------------------
+                // !< load rest of them and put them into an array---------------------残りの問題と答えを翻訳する
 
-                // todo:< CAHolder translate---------------------------
+                // todo:< CAHolder translate--------------------------- 残りの正解の答えを翻訳
                 const cat = []
                 while (CAHolder.length>0) {
                     let bro = CAHolder.splice(0,1).flat()
@@ -171,7 +171,7 @@ export default function GetStarted(props){
                 setCAHolder(cat)
                 // todo:> CAHolder translate---------------------------
 
-                // todo:< Holder translate------------------------------
+                // todo:< Holder translate------------------------------ 残りの質問と回答のオプションを翻訳
                 const bird = []
                 while(holder.length>0){
                     const geo = holder.splice(0,1).flat()
@@ -188,7 +188,8 @@ export default function GetStarted(props){
                         // todo:> question part --------------
 
 
-                        // todo:< answers part -----------
+                        // todo:< answers part -----------残りの回答オプションを翻訳
+                        // * using promise all() because there is multiple promise. プロミスオールを使っているのは、複数のプロミスを処理するため。
                         const todo = []
                        await Promise.all(
                             element[1].map(i=> 
@@ -206,7 +207,7 @@ export default function GetStarted(props){
                         // todo:> answers part -----------
                     }
 
-                    // todo:< combine question and answer part and then put in an array----------
+                    // todo:< combine question and answer part and then put in an array----------上の質問と回答のオプションブロックを連結
                     for (let index = 0; index < frog.length; index++) {
                         bird.push([snake[index], frog[index]])
                     }
@@ -215,11 +216,13 @@ export default function GetStarted(props){
 
                 const tiger =[]
 
-                // * making a block made of an question and its answer choices. クイズと答えのブロックを作る。
+                // * making a block made of an question and its answer choices. 連結したアイテムを５問づつカットしてアレイ化する。
                 while(bird.length>0){
                     const vem = bird.splice(0,5)
                     tiger.push(vem)
                 }
+
+                // * put into a new state array because other useEffect's dependency is 'holder' and i don't want to mess up. ユーズエフェクトを使った工程で’ホールド’を依存アレイにしたので、その工程を壊さないようにするため新しいステイトアレイを採用
                 setTraHolder(tiger)
 
                 // * hide nextQues button until finish translating. 翻訳が終わるまで次のクイズボタンを隠す
@@ -234,7 +237,7 @@ export default function GetStarted(props){
             }
             // !> First time, render 5 items and then load translated items , put them into arrays-------------
 
-            // * just cut the block in a chunk size
+            // * cut traHolder into a chunk size. traHolder is an array that I translated at the round 0 or first load. 一周目で翻訳したクイズブロックと答えを一ページ分取り出す。
             if(round>1){
 
                 // !< splice translated array and set to state --------------------------
@@ -246,6 +249,8 @@ export default function GetStarted(props){
                  
                  setAnswered(false)
                  // setIsLoading(false)
+
+                //  * to scroll up to top page. トップページにスクロールアップするため。
                 window.scroll(0,0)
                 }
             }else{
@@ -258,21 +263,28 @@ export default function GetStarted(props){
 // ! nextQues func -----------------------------------------------------
 
     React.useEffect(()=>{
-        if(round===0)return
+
         setRound(pre=>pre+1)
 
+        // * setRound +1 but it doesn't increment immediately *it does in next re-render* that's why next if state works perfect. セットラウンドに１をプラスするが、すぐに実行されるわけではないので*次のレンダーで実行される*、次のifステイトはちゃんと作動する。https://stackoverflow.com/questions/54069253/the-usestate-set-method-is-not-reflecting-a-change-immediately
+
+        // * at the first render, holder nor traHolder's length is still 0. thus it setDone to true. that's not what i want so here i cancel first round buy giving return
+        // * 初めのレンダー時にはホルダーまたはトラホルダーのレングスは０なので、下記のコードによってsetDoneがtrueにされる。それを防ぐためにラウンドが０の場合リターンを返している。
+        if(round===0)return
+
         if(props.formData.language!==null){
-            // if(traLoading)return
-        if(life<1 || traHolder.length===0){
-            setDone(true)
-        }
+            // * not necessary. if(traLoading)return
+         if(life<1 || traHolder.length===0){
+                setDone(true)
+            }
         return
         }
-
+        
         if(life<1 || holder.length===0){
             setDone(true)
         }
     }, [triviaBlock])
+
 
     React.useEffect(()=>{
    async function getTriviaData(){
@@ -281,7 +293,7 @@ export default function GetStarted(props){
 
             const resp = await axios.get(url)
 
-
+                // * remove character from triviaDB API. APIからの特殊文字を取り除く。
                 function removeCharacters(question) {
                     return question.replace(/(&quot\;)/g, "\"").replace(/(&rsquo\;)/g, "\"").replace(/(&#039\;)/g, "\'").replace(/(&amp\;)/g, "\"");
                   }
@@ -341,6 +353,8 @@ export default function GetStarted(props){
 
         for (let index = 0; index < resp.data.results.length; index++) {
             const element = resp.data.results[index];
+
+            // * combine incorrect answers and correct answer, mix the order then put into an array. 不正解の回答と正解の回答を混ぜてひとつのアレイに入れる。
             let combinedAnswers = await combineAllAnswers(element, element.correct_answer)
 
             // ! translate block-----------------------------------
@@ -350,6 +364,7 @@ export default function GetStarted(props){
             // }
             // ! translate block----------------------------------------
 
+            // * make them into each object to add id and isSelected. ID と　isSelected　を加えるために、それぞれの回答アイテムをオブジェクト化する。
             const objectedAnswers =  combinedAnswers.map(item=>(
                 { 
                 value:removeCharacters(item),
@@ -358,6 +373,8 @@ export default function GetStarted(props){
                 }
             ))
             // setAllPossibleAnswers(prevState=>[...prevState, objectedAnswers])
+
+            // * same as answers but for question. 上記の回答と工程は同じだが、質問用。
             let question = {value:removeCharacters(element.question), id:nanoid()}
 
 
@@ -372,7 +389,7 @@ export default function GetStarted(props){
 
 
 
-
+                // * make them a pair as an array. 上記の２つを一つのアレイにする事でペアにする。
             set.push(
                 [
                     question,
@@ -382,9 +399,12 @@ export default function GetStarted(props){
         }
 
         const ansBlock = []
+
+        // * make an array which stores the answer for each questions. それぞれのクイズの正解の答えだけをストックしているアレイを作る。
         const allCA = resp.data.results.map(result=>removeCharacters(result.correct_answer))
 
 
+        // * split the answers by 5 and put them into an array. ５問づつ答えを切り取ってアレイにする。
         while(allCA.length>=1){
             const chunkedAns = allCA.splice(0,5)
             ansBlock.push(chunkedAns)
@@ -392,6 +412,7 @@ export default function GetStarted(props){
         setCAHolder(ansBlock)
 
         const blocks = []
+        // * split the pairs of question and potential answers by 5 and put into an array. ５問づつクイズと回答のペアを切り取ってアレイにする。
         while(set.length>=1){
             const chunked = set.splice(0,5)
             blocks.push(chunked)
@@ -400,6 +421,7 @@ export default function GetStarted(props){
         setHolder(blocks)
         
 
+        // * if translate is needed, it takes more time so setIsLoading remain true. 翻訳が必要な場合、更に時間を要するため　setIsLoading　は　true　のまま。
         if(props.formData.language!==null)setIsLoading(true)
         else{
             setIsLoading(false)
@@ -407,28 +429,26 @@ export default function GetStarted(props){
     } catch(e){console.error(e)}
 }
  getTriviaData()
-//  while(true){
-
-//      setTimeout(()=>console.log('hi'), 1000)
-//  }
 }
 ,[])
 
-// console.log(holder)
-// console.log(CAHolder)
 
 
+    // * once API from triviaDB is loaded, nextQues() fired. API のデータを取得したら　nextQues()　を発動。
         React.useEffect(()=>{
             nextQues()
         }
         ,[holder])
 
+        // * change potential answer's isSelected. 回答選択時にisSelected　を変える。
         const changeSelected = (e, id, quesID) =>{
 
                 const testArr = []
                 currentBlock.map(i=>{
                     for (let index = 0; index < i.length; index++) {
                         const element = i[index];
+
+                        // * if question's id === the event's question's id. もしクイズのIDがイベントが起こっているクイズのIDと一致した場合。
                         if (element[0].id===quesID) {
                             const deli = element[1].map(item=>item.id===id?{...item, isSelected:true}:{...item, isSelected:false})
                             testArr.push([element[0], deli])
@@ -476,6 +496,7 @@ export default function GetStarted(props){
                 //   }
                   
                   return(
+                    // * onMouseOver event for parallax effect. マウスオーバーイベントはパララックスエフェクトのため。
                     <div key={cardKey} onMouseOver={()=>gs.dataset.activeIndex = index} className="questionCard">
                         {question}
                         <hr />
@@ -502,6 +523,9 @@ export default function GetStarted(props){
                 const correctAns = currentAnsBlock[0][index]
                 
                 const test = element[1].map(ans=>ans.value===correctAns?{...ans, correctAns:true}:{...ans, correctAns:false})
+
+                // * counting correct answer. this is for one question each. not counting correct answers at once.
+                // * 正解の回答をカウントしている。　しかし、ひとつのクイズづつで、一度にすべての正解をカウントするものではない。
                 for (let index = 0; index < test.length; index++) {
                     const element = test[index];
                     if (element.correctAns==true&&element.isSelected==true) {
@@ -586,6 +610,8 @@ export default function GetStarted(props){
 }
 
 const handleResult = ()=>{
+
+    // * people who scored 0 can't be a new king. ０ポイントの人はキングになれない。
     if(score<1){ 
     setResultPage(true)
         return
