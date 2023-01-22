@@ -49,7 +49,7 @@ export default function FinishPage(props){
                     <br /> 
 
                     {props.bestScore?
-                    <h1>Current best score is {props.bestScore.score} by {props.bestScore.name} on {props.bestScore.theDay}</h1>
+                    <h1>Current best score on your device is {props.bestScore.score} by {props.bestScore.name} on {props.bestScore.theDay}</h1>
                     :null
                 }
                     <br />
