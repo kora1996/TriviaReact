@@ -21,7 +21,7 @@ export default function GetStarted(props){
 
     const [score, setScore]=React.useState(0)
 
-    const [allPossibleAnswers, setAllPossibleAnswers] = React.useState([])
+    // const [allPossibleAnswers, setAllPossibleAnswers] = React.useState([])
     const [isLoading, setIsLoading] = React.useState(true)
     const [triviaBlock, setTriviaBlock] = React.useState([])
 
@@ -298,56 +298,9 @@ export default function GetStarted(props){
                     return question.replace(/(&quot\;)/g, "\"").replace(/(&rsquo\;)/g, "\"").replace(/(&#039\;)/g, "\'").replace(/(&amp\;)/g, "\"");
                   }
 
-            // ! translate block
-            // props.isJapanese&&TranslatorCorrectAns(resp.data.results, 'correct_answer', setCorrectAnswer)
-            // ! translate block
-            // console.log(resp.data.results)
         const set = []
 
 
-        // const ob = {value:'cat eat fish', id:'1342134'}
-        // const haha = Translator(['i ate tofu', 'it ate mad', 'dog eat dog world'])
-
-
-        // const haha = Translator(ob.value)
-        // console.log(haha)
-        // haha.then((hi)=>console.log(hi.translatedText))
-
-
-        // ! TEST making translate block------------------------------------------------------
-        // const traQue = []
-        // const traInAns = []
-        // const traCoAns = []
-
-        // for (let index = 0; index < resp.data.results.length; index++) {
-        //     const element = resp.data.results[index];
-        //     const id = nanoid()
-        //     const ques = {value:element.question, id:id}
-        //     traQue.push(ques)
-
-        //     const inAns = {value:element.incorrect_answers, id:id}
-        //     traInAns.push(inAns)
-
-        //     const coAns = {value:element.correct_answer, id:id}
-        //     traCoAns.push(coAns)
-        // }
-        // // console.log(traQue)
-        // // console.log(traInAns)
-        // // console.log(traCoAns)
-
-        // const qu = Translator(traQue.map(i=>i.value))
-        // qu.then(val=>console.log(val))
-
-        // ! TEST making translate block------------------------------------------------------
-
-
-
-
-        // ! translate here before making blocks ---------------------
-        //     const aa = resp.data.results.map(i=>i.question)
-        // const joke = TranslatorPlane(aa)
-        // joke.then(console.log(joke))
-        // ! have to connect question and answers accordingly using id or smth--------------------
 
 
 
@@ -357,12 +310,6 @@ export default function GetStarted(props){
             // * combine incorrect answers and correct answer, mix the order then put into an array. 不正解の回答と正解の回答を混ぜてひとつのアレイに入れる。
             let combinedAnswers = await combineAllAnswers(element, element.correct_answer)
 
-            // ! translate block-----------------------------------
-            // if(props.isJapanese){
-            //     const hi = await TranslatorPlane(combinedAnswers)
-            //     combinedAnswers = await hi.map((result)=>result)
-            // }
-            // ! translate block----------------------------------------
 
             // * make them into each object to add id and isSelected. ID と　isSelected　を加えるために、それぞれの回答アイテムをオブジェクト化する。
             const objectedAnswers =  combinedAnswers.map(item=>(
@@ -372,21 +319,9 @@ export default function GetStarted(props){
                 isSelected:false
                 }
             ))
-            // setAllPossibleAnswers(prevState=>[...prevState, objectedAnswers])
 
             // * same as answers but for question. 上記の回答と工程は同じだが、質問用。
             let question = {value:removeCharacters(element.question), id:nanoid()}
-
-
-            // ! translate block--------------------------------------
-                // if (props.isJapanese) {
-                    
-                //     const hey = await Translator(element.question)
-                //      question = {value:hey.translatedText, id:nanoid()}
-                // }
-            // ! translate block-----------------------------------------
-
-
 
 
                 // * make them a pair as an array. 上記の２つを一つのアレイにする事でペアにする。
@@ -417,7 +352,6 @@ export default function GetStarted(props){
             const chunked = set.splice(0,5)
             blocks.push(chunked)
         }
-        // const testy = set
         setHolder(blocks)
         
 
@@ -491,9 +425,7 @@ export default function GetStarted(props){
                 )
                 const cardKey = nanoid()
 
-                // function removeCharacters(question) {
-                //     return question.replace(/(&quot\;)/g, "\"").replace(/(&rsquo\;)/g, "\"").replace(/(&#039\;)/g, "\'").replace(/(&amp\;)/g, "\"");
-                //   }
+
                   
                   return(
                     // * onMouseOver event for parallax effect. マウスオーバーイベントはパララックスエフェクトのため。
@@ -544,57 +476,7 @@ export default function GetStarted(props){
             setTriviaBlock(finalForm)
         }
 
-//     const restart = async() =>{
-//         try{
-//             props.restart()
-//             setIsLoading(true)
-//             setResultPage(false)
-//             setLife(10)
-//             setDone(false)
-//             setRound(0)
-//             setScore(0)
-//             setTriviaBlock([])
-//             setNewBest(false)
-//             setKing(false)
-//             const resp = await axios.get("https://opentdb.com/api.php?amount=50")
 
-//         const set = []
-//         for (let index = 0; index < resp.data.results.length; index++) {
-//             const element = resp.data.results[index];
-//             const combinedAnswers = await combineAllAnswers(element, element.correct_answer)
-//             const objectedAnswers =  combinedAnswers.map(item=>(
-//                 { 
-//                 value:item,
-//                 id:nanoid(),
-//                 isSelected:false
-//                 }
-//             ))
-//             const question = {value:element.question, id:nanoid()}
-//             set.push(
-//                 [
-//                     question,
-//                     objectedAnswers 
-//                 ]
-//             )
-//         }
-
-//         const ansBlock = []
-//         const allCA = resp.data.results.map(result=>result.correct_answer)
-//         while(allCA.length>=1){
-//             const chunkedAns = allCA.splice(0,5)
-//             ansBlock.push(chunkedAns)
-//         }
-//         setCAHolder(ansBlock)
-
-//         const blocks = []
-//         while(set.length>=1){
-//             const chunked = set.splice(0,5)
-//             blocks.push(chunked)
-//         }
-//         setHolder(blocks)
-//         setIsLoading(false)
-//     } catch(e){console.error(e)}
-// }
 
     const restart = () =>{
             props.restart()
