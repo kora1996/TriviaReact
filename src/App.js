@@ -1,4 +1,4 @@
-import './css/style.css';
+// import './css/style.css';
 import React from 'react';
 import FetchData from './components/Translater';
 import Start from './components/Start';
